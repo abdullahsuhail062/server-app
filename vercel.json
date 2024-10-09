@@ -1,43 +1,6 @@
 {
   "version": 2,
-  "env": {
-    "API_URL": "https://your-server-app.vercel.app",
-    "NODE_ENV": "production"
-  },
-  "build": {
-    "env": {
-      "API_URL": "https://your-server-app.vercel.app",
-      "NODE_ENV": "production"
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "https://your-server-app.vercel.app/api/:path*"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Origin, X-Requested-With, Content-Type, Accept"
-        }
-      ]
-    }
-  ],
-  "redirects": [
-    {
-      "source": "/old-path",
-      "destination": "/new-path",
-      "statusCode": 301
-    }
-  ],
+  
   "routes": [
     {
       "src": "/(.*)",
