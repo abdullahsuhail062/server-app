@@ -11,7 +11,7 @@ app.use(function(req, res, next) {
     next();
   });
   app.use(cors({
-    origin: 'http://localhost:4200',
+    origin: 'https://data-keeping-app.vercel.app',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   }));
