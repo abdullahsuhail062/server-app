@@ -10,11 +10,16 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   });
+  app.options('/api/(.*)', cors()); // enable pre-flight across-the-board
+
   app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+      origin: '*', // or '*' for testing
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['X-CSRF-Token', 'X-Requested-With', 'Content-Type', 'Authorization'],
+      credentials: true
   }));
+  app.options('/api/(.*)', cors()); // enable pre-flight across-the-board
+
   
  
   app.post('/api/registerUser', function (req, res) {
