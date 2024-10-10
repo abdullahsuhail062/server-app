@@ -20,6 +20,10 @@ app.use(function(req, res, next) {
   }));
   app.options('/api/(.*)', cors()); // enable pre-flight across-the-board
 
+  res.cookie('__vercel_live_token', token, {
+    sameSite: 'None',  // Allows cross-site requests
+    secure: true       // Requires HTTPS
+  });
   
  
   app.post('/api/registerUser', function (req, res) {
