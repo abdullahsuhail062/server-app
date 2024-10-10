@@ -6,25 +6,25 @@ var app = express();
 var cors = require('cors')
 app.use(bodyParser.json());
 
-  app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
-  app.options('/api/(.*)', cors()); // enable pre-flight across-the-board
+  // app.use(function(req, res, next) {
+  //   res.header("Access-Control-Allow-Origin", "*");
+  //   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  //   next();
+  // });
+  // app.options('/api/(.*)', cors()); // enable pre-flight across-the-board
 
-  app.use(cors({ 
-       origin:'https://data-keeping-app.vercel.app', // or '*' for testing
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['X-CSRF-Token', 'X-Requested-With', 'Content-Type', 'Authorization'],
-      credentials: true
-  }));
-  app.options('/login', function (req, res) {
-    res.setHeader("Access-Control-Allow-Origin", "https://data-keeping-app.vercel.app");
-    res.setHeader('Access-Control-Allow-Methods', '*');
-    res.setHeader("Access-Control-Allow-Headers", "*");
-    res.end();
-  });
+  // app.use(cors({ 
+  //      origin:'https://data-keeping-app.vercel.app', // or '*' for testing
+  //     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  //     allowedHeaders: ['X-CSRF-Token', 'X-Requested-With', 'Content-Type', 'Authorization'],
+  //     credentials: true
+  // }));
+  // app.options('/login', function (req, res) {
+  //   res.setHeader("Access-Control-Allow-Origin", "https://data-keeping-app.vercel.app");
+  //   res.setHeader('Access-Control-Allow-Methods', '*');
+  //   res.setHeader("Access-Control-Allow-Headers", "*");
+  //   res.end();
+  // });
 
   app.options('/api/(.*)', cors()); // enable pre-flight across-the-board
 
