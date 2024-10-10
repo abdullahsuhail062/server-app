@@ -5,7 +5,7 @@
   ],
 
   "env": {
-    "API_URL": "https://your-server-app.vercel.app",
+    "API_URL": "https://your-server-app-chi.vercel.app",
     "NODE_ENV": "production"
   },
   "build": {
