@@ -22,7 +22,7 @@ app.use(function(req, res, next) {
 
   
  
-  app.post('/api/registerUser', function (req, res) {
+  app.post('api/registerUser', function (req, res) {
     console.log(req.body); // Log the request body
     const errors = {};
     
