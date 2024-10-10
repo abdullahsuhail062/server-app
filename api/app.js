@@ -14,13 +14,13 @@ app.use(bodyParser.json());
   app.options('/api/(.*)', cors()); // enable pre-flight across-the-board
 
   app.use(cors({ 
-       origin:'*', // or '*' for testing
+       origin:'https://data-keeping-app.vercel.app', // or '*' for testing
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['X-CSRF-Token', 'X-Requested-With', 'Content-Type', 'Authorization'],
       credentials: true
   }));
   app.options('/login', function (req, res) {
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Origin", "https://data-keeping-app.vercel.app");
     res.setHeader('Access-Control-Allow-Methods', '*');
     res.setHeader("Access-Control-Allow-Headers", "*");
     res.end();
