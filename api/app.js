@@ -39,7 +39,9 @@ app.use(bodyParser.json());
       
     
      })
-  
+     app.head('/', function (req, res) {
+      res.status(200).end(); // Respond to HEAD requests with just headers
+    });
  
   app.post('/api/registerUser', function (req, res) {
     console.log(req.body); // Log the request body
