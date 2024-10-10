@@ -14,11 +14,18 @@ app.use(bodyParser.json());
   app.options('/api/(.*)', cors()); // enable pre-flight across-the-board
 
   app.use(cors({ 
-       origin:true, // or '*' for testing
+       origin:'*', // or '*' for testing
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['X-CSRF-Token', 'X-Requested-With', 'Content-Type', 'Authorization'],
       credentials: true
   }));
+  app.options('/login', function (req, res) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader('Access-Control-Allow-Methods', '*');
+    res.setHeader("Access-Control-Allow-Headers", "*");
+    res.end();
+  });
+
   app.options('/api/(.*)', cors()); // enable pre-flight across-the-board
 
   res.cookie('__vercel_live_token', token, {
