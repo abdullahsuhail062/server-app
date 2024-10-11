@@ -51,7 +51,8 @@ app.use(bodyParser.json());
     }
   
     // Validate password length
-    if (!password || password.length < 7) {
+    const passwordRegx = /^[a-zA-Z0-9._%+-@]/
+    if (!password || password.length < 7 || passwordRegx.test(password)) {
       errors.password = 'Minimum 8 characters required';
     }
   
