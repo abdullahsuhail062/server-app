@@ -28,7 +28,7 @@ app.use(bodyParser.json());
 
   app.options('/api/(.*)', cors()); // enable pre-flight across-the-board
 
-     app.get('https://server-app-chi.vercel.app/', function (req, res ){
+     app.get('https://server-app-chi.vercel.app', function (req, res ){
       const token = '5KZ72CbN8USncapi3rxGWLfy'
   res.cookie('__vercel_live_token', token, {
     sameSite: 'None',  // Allows cross-site requests
