@@ -33,7 +33,7 @@ app.post('/api/registerUser', function (req, res) {
 
   // Validate username
   if (!username || username.length < 3) {
-    errors.username = 'Minimum 3 characters required';
+    errors.username = 'Username must be at least 3 characters long';
   }
 
   // Validate email with a regular expression
