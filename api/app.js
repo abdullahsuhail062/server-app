@@ -37,7 +37,10 @@ app.post('/api/registerUser', function (req, res) {
   const {username}=req.body; // Destructure all variables one by one
   const {email}=req.body
   const {password}=req.body
-  console.log(username, email, password,"this is serverside");
+  if (username) {
+    res.status(200).json({message: 'username exist'})
+    
+  }
   
 
   // Validate username
