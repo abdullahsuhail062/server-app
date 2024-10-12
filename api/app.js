@@ -63,9 +63,10 @@ app.use(bodyParser.json());
       return res.status(400).json({errors});
     }
     
-  
-    // If no errors, send a success response (for example purposes)
-    res.status(200).json({ message: 'User registered successfully' });
+      if (username && email && password) {
+        res.status(200).json({ message: 'User registered successfully' });
+        
+      }
   });
   
   
