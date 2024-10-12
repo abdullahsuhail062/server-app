@@ -12,6 +12,11 @@ app.use(cors({
   allowedHeaders: ['X-CSRF-Token', 'X-Requested-With', 'Content-Type', 'Authorization'],
   credentials: true
 }));
+app.use((req, res, next) => {
+  res.setHeader("Content-Security-Policy", "default-src 'none'; img-src 'self' https://server-app-chi.vercel.app; script-src 'self'; style-src 'self'");
+  next();
+});
+
 
 // Enable pre-flight requests for CORS
 app.options('/api/registerUser', function (req, res) {
