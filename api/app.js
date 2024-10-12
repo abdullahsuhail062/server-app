@@ -29,7 +29,7 @@ app.post('/api/registerUser', function (req, res) {
   });
 
   const errors = {};
-  const { username, email, password } = req.body || {}; // Destructure all variables at once
+  const { username, email, password } = req.body; // Destructure all variables at once
 
   // Validate username
   if (!username || username.length < 3) {
