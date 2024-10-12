@@ -45,7 +45,7 @@ app.use(bodyParser.json());
     }
   
     // Validate email with a regular expression
-    const regx = /^[a-zA-Z0-9._%+-]+@example\.com$/;
+    const regx = '^[a-zA-Z0-9._%+-]+@example\.com$'
     if (!email || !regx.test(email)) {
       errors.email = 'Invalid email address';
     }
