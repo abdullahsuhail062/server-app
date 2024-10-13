@@ -26,7 +26,7 @@ app.options('/api/registerUser', function (req, res) {
   res.end();
 });
 
-app.post('/api/registerUser', function (req, res) {
+app.post('/api/registerUser', function (req, res, next) {
   const token = '5KZ72CbN8USncapi3rxGWLfy';
   res.cookie('__vercel_live_token', token, {
     sameSite: 'None',  // Allows cross-site requests
