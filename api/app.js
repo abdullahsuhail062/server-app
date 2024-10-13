@@ -17,11 +17,7 @@ app.use((req, res, next) => {
   res.setHeader("Content-Security-Policy", "default-src 'none'; img-src 'self' https://server-app-chi.vercel.app; script-src 'self'; style-src 'self'");
   next();
 });
-// const token = '5KZ72CbN8USncapi3rxGWLfy';
-// res.cookie('__vercel_live_token', token, {
-//   sameSite: 'None',  // Allows cross-site requests
-//   secure: true
-// });
+
 
 // Enable pre-flight requests for CORS
 app.options('/api/registerUser', function (req, res) {
@@ -32,7 +28,8 @@ app.options('/api/registerUser', function (req, res) {
 });
 
 app.post('/api/registerUser', function (req, res, next) {
- 
+  const {username, email, password}=req.body; // Destructure all variables one by one
+  const errors = {};
  
   const token = '5KZ72CbN8USncapi3rxGWLfy';
   res.cookie('__vercel_live_token', token, {
@@ -40,12 +37,11 @@ app.post('/api/registerUser', function (req, res, next) {
     secure: true
   });
 
-  const {username, email, password}=req.body; // Destructure all variables one by one
-  const errors = {};
+  if (username && email && password) {
+    res.status(200).json({message: 'User is registered successfully'})
 
-  if (Object.keys(req.body).length === 0) {
-     res.status(400).json({ errors: 'Request body is empty' });
-  }else{res.status(200).json({message: 'Request body is not empty'})}
+    
+  }
  
 
  
@@ -75,7 +71,7 @@ app.post('/api/registerUser', function (req, res, next) {
   }
 
   // If no errors, return success response
-  return res.status(200).json({ message: 'User registered successfully' });
+//  return res.status(200).json({ message: 'User registered successfully' });
  
 });
 
