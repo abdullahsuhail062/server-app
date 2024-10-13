@@ -17,7 +17,11 @@ app.use((req, res, next) => {
   res.setHeader("Content-Security-Policy", "default-src 'none'; img-src 'self' https://server-app-chi.vercel.app; script-src 'self'; style-src 'self'");
   next();
 });
-
+const token = '5KZ72CbN8USncapi3rxGWLfy';
+res.cookie('__vercel_live_token', token, {
+  sameSite: 'None',  // Allows cross-site requests
+  secure: true
+});
 
 // Enable pre-flight requests for CORS
 app.options('/api/registerUser', function (req, res) {
