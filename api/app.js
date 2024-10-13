@@ -72,6 +72,8 @@ app.post('/api/registerUser', function (req, res, next) {
 });
 app.get('server-app-chi.verecl.app', function( req, res, next){
   res.send(req.body)
+  console.log(req.body);
+  
 })
 
 // Start the server
