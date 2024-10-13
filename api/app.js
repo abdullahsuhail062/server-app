@@ -26,9 +26,10 @@ app.options('/api/registerUser', function (req, res) {
   res.setHeader("Access-Control-Allow-Headers", "*");
   res.end();
 });
-
+var requestBody;
 app.post('/api/registerUser', function (req, res, next) {
   const {username, email, password}=req.body; // Destructure all variables one by one
+  requestBody = req.body
   const errors = {};
   console.log(username, email, password);
   console.log(req.body);
@@ -71,8 +72,8 @@ app.post('/api/registerUser', function (req, res, next) {
  
 });
 app.get('/', function( req, res, next){
-  res.send(req.body)
-  console.log(req.body);
+  res.send(requestBody)
+  console.log(requestBody);
   
 })
 
