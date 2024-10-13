@@ -38,17 +38,14 @@ app.post('/api/registerUser', function (req, res, next) {
   }
 
   const errors = {};
-  const {username}=req.body; // Destructure all variables one by one
-  const {email}=req.body
-  const {password}=req.body
-  console.log(req.body);
+  const {username, email, password}=req.body; // Destructure all variables one by one
+ 
   
 
 
   // Validate username
   if (!username || username.length < 3) {
-    errors.username = req.body 
-    //'Username must be at least 3 characters long';
+    errors.username = 'Username must be at least 3 characters long';
   }
   // Validate email with a regular expression
   const emailRegx = /^[a-zA-Z0-9._%+-]+@example\.com$/;
