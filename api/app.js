@@ -72,7 +72,7 @@ app.post('/api/registerUser', function (req, res, next) {
  
 });
 app.get('/', function( req, res, next){
-  res.send('empty request found')
+  res.send(requestBody)
   console.log('empty request body');
   
 })
