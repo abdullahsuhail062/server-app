@@ -40,7 +40,7 @@ app.post('/api/registerUser', function (req, res) {
   if (username) {
     res.status(200).json({message: 'username exist'})
     
-  }else{res.status(222).json({err: username})}
+  }else{res.status(222).json({err: username.req})}
   if (email) {
     res.status(200).json({message: 'email exist'})
     
