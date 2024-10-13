@@ -37,15 +37,7 @@ app.post('/api/registerUser', function (req, res) {
   const {username}=req.body; // Destructure all variables one by one
   const {email}=req.body
   const {password}=req.body
-  if (username) {
-    res.status(200).json({message: 'username exist'})
-    
-  }else{res.status(222).json({err: username, email, password})}
-  if (email) {
-    res.status(200).json({message: 'email exist'})
-    
-  }else{res.status(2).json({err:'email doesnt exist'})}
-  
+
 
   // Validate username
   if (!username || username.length < 3) {
