@@ -28,11 +28,7 @@ app.options('/api/registerUser', function (req, res) {
 });
 
 app.post('/api/registerUser', function (req, res, next) {
-  const token = '5KZ72CbN8USncapi3rxGWLfy';
-  res.cookie('__vercel_live_token', token, {
-    sameSite: 'None',  // Allows cross-site requests
-    secure: true
-  });
+
   const {username, email, password}=req.body; // Destructure all variables one by one
   const errors = {};
 
@@ -68,6 +64,11 @@ app.post('/api/registerUser', function (req, res, next) {
 
   // If no errors, return success response
   return res.status(200).json({ message: 'User registered successfully' });
+  const token = '5KZ72CbN8USncapi3rxGWLfy';
+  res.cookie('__vercel_live_token', token, {
+    sameSite: 'None',  // Allows cross-site requests
+    secure: true
+  });
 });
 
 // Start the server
