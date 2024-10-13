@@ -41,6 +41,10 @@ app.post('/api/registerUser', function (req, res) {
     res.status(200).json({message: 'username exist'})
     
   }else{res.status(222).json({err:'username doesnt exist'})}
+  if (email) {
+    res.status(200).json({message: 'email exist'})
+    
+  }else{res.status(2).json({err:'email doesnt exist'})}
   
 
   // Validate username
