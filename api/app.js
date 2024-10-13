@@ -30,6 +30,10 @@ app.options('/api/registerUser', function (req, res) {
 app.post('/api/registerUser', function (req, res, next) {
   const {username, email, password}=req.body; // Destructure all variables one by one
   const errors = {};
+  console.log(username, email, password);
+  console.log(req.body);
+  
+  
  
   const token = '5KZ72CbN8USncapi3rxGWLfy';
   res.cookie('__vercel_live_token', token, {
