@@ -37,6 +37,8 @@ app.post('/api/registerUser', function (req, res, next) {
   const {username}=req.body; // Destructure all variables one by one
   const {email}=req.body
   const {password}=req.body
+  console.log(req.body);
+  
 
 
   // Validate username
