@@ -37,7 +37,7 @@ app.post('/api/registerUser', function (req, res, next) {
 
   if (Object.keys(req.body).length === 0) {
     return res.status(400).json({ errors: 'Request body is empty' });
-  }
+  }else{res.status(200).json({message: 'Request body is not empty'})}
 
   const {username, email, password}=req.body; // Destructure all variables one by one
  
