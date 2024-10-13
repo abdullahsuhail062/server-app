@@ -37,16 +37,8 @@ app.post('/api/registerUser', function (req, res, next) {
     secure: true
   });
 
-  if (username && email && password) {
-    res.status(200).json({message: 'User is registered successfully'})
-
-    
-  }
- 
-
- 
-  
-
+  if (!username && !email && !password) {
+    res.status(200).json({message: 'User is registered successfully'})}
 
   // Validate username
   if (!username || username.length < 3) {
