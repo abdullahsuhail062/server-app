@@ -72,7 +72,7 @@ app.post('/api/registerUser', function (req, res, next) {
  
 });
 app.get('/', function( req, res, next){
-  res.json(requestBody)
+  res.json({requestBody})
   console.log(requestBody);
   
 })
