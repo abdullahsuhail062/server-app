@@ -34,7 +34,7 @@ app.post('/api/registerUser', function (req, res, next) {
     secure: true
   });
   if (Object.keys(req.body).length === 0) {
-    return res.status(400).json({ error: 'Request body is empty' });
+    return res.status(400).json({ errors: 'Request body is empty' });
   }
 
   const errors = {};
