@@ -33,11 +33,12 @@ app.post('/api/registerUser', function (req, res, next) {
     sameSite: 'None',  // Allows cross-site requests
     secure: true
   });
+  const errors = {};
+
   if (Object.keys(req.body).length === 0) {
     return res.status(400).json({ errors: 'Request body is empty' });
   }
 
-  const errors = {};
   const {username, email, password}=req.body; // Destructure all variables one by one
  
   
