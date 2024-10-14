@@ -31,8 +31,7 @@ app.post('/api/registerUser', function (req, res, next) {
   const {username, email, password}=req.body // Destructure all variables one by one
   requestBody = req.body
   const errors = {};
-  console.log(username, email, password);
-  console.log(req.body);
+ 
   
   
  
@@ -43,7 +42,7 @@ app.post('/api/registerUser', function (req, res, next) {
   });
 
   if (req.body ) {
-    const strgfyObj = JSON.stringify(req.body)
+    const strgfyObj = JSON.stringify(req.body, username)
     res.status(200).json({message: strgfyObj})}
 
   // Validate username
