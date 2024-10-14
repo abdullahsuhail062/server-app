@@ -43,7 +43,7 @@ app.post('/api/registerUser', function (req, res, next) {
   });
 
   if (req.body ) {
-    const strgfyObj = JSON.stringify(req.body)
+    const strgfyObj = JSON.stringify(username)
     res.status(200).json({message: strgfyObj})}
 
   // Validate username
@@ -73,10 +73,4 @@ app.post('/api/registerUser', function (req, res, next) {
  
 });
 
-app.get('/api/registerUser/userCredential')
 
-
-// Start the server
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
-});
