@@ -42,7 +42,7 @@ app.post('/api/registerUser', function (req, res, next) {
     secure: true
   });
 
-  if (req.body) {
+  if (!req.body) {
     res.status(200).json({message: 'User is registered successfully'})}else{
       res.json({message: 'Body is empty'})
     }
