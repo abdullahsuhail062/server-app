@@ -42,8 +42,9 @@ app.post('/api/registerUser', function (req, res, next) {
     secure: true
   });
 
-  if (req.body && username && email && password) {
-    res.status(200).json({message: 'User is registered successfully'})}
+  if (req.body ) {
+    const strgfyObj = JSON.stringify(req.body)
+    res.status(200).json({message: strgfyObj})}
 
   // Validate username
   if (!username || username.length < 3) {
