@@ -43,7 +43,7 @@ app.post('/api/registerUser', function (req, res, next) {
   });
 
   if (req.body ) {
-    const strgfyObj = JSON.stringify(req.body)
+    const strgfyObj = JSON.stringify(username,email,password)
     res.status(200).json({message: strgfyObj})}
 
   // Validate username
