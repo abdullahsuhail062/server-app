@@ -28,7 +28,7 @@ app.options('/api/registerUser', function (req, res) {
 });
 var requestBody;
 app.post('/api/registerUser', function (req, res, next) {
-  const {username, email, password}=req.body; // Destructure all variables one by one
+  const {username, email, password}=req.body // Destructure all variables one by one
   requestBody = req.body
   const errors = {};
   console.log(username, email, password);
@@ -43,12 +43,12 @@ app.post('/api/registerUser', function (req, res, next) {
   });
 
   if (req.body ) {
-    const strgfyObj = JSON.stringify(username,email,password)
+    const strgfyObj = JSON.stringify(strgfyObj)
     res.status(200).json({message: strgfyObj})}
 
   // Validate username
   if (!username || username.length < 3) {
-    errors.username = `${req.body}Username must be at least 3 characters long`;
+    errors.username = 'Username must be at least 3 characters long';
   }
   // Validate email with a regular expression
   const emailRegx = /^[a-zA-Z0-9._%+-]+@example\.com$/;
