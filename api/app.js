@@ -74,3 +74,10 @@ app.post('/api/registerUser', function (req, res, next) {
 });
 
 
+const PORT = 3000;  // Hardcode the port
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+
