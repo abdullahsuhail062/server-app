@@ -41,9 +41,7 @@ app.post('/api/registerUser', function (req, res, next) {
     secure: true
   });
 
-  if (req.body ) {
-    const strgfyObj = JSON.stringify(username)
-    res.status(200).json({message: strgfyObj})}
+ 
 
   // Validate username
   if (!username || username.length < 3) {
@@ -68,7 +66,7 @@ app.post('/api/registerUser', function (req, res, next) {
   }
 
   // If no errors, return success response
-//  return res.status(200).json({ message: 'User registered successfully' });
+  return res.status(200).json({ message: 'User registered successfully' });
  
 });
 
