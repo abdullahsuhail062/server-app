@@ -29,12 +29,7 @@ app.options('/api/registerUser', function (req, res) {
 var requestBody;
 app.post('/api/registerUser', function (req, res, next) {
   const {username, email, password}=req.body // Destructure all variables one by one
-  requestBody = req.body
   const errors = {};
- 
-  
-  
- 
   const token = '5KZ72CbN8USncapi3rxGWLfy';
   res.cookie('__vercel_live_token', token, {
     sameSite: 'None',  // Allows cross-site requests
