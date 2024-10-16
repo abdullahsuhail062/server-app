@@ -1,4 +1,4 @@
-import { sql } from '@vercel/postgres';
+import { sql } from '@vercel/postgres';  // Import Vercel Postgres
 import { VercelRequest, VercelResponse } from '@vercel/node';
 var express = require('express');
 var app = express();
@@ -20,7 +20,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
 // Enable pre-flight requests for CORS
 app.options('/api/registerUser', function (req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -28,17 +27,10 @@ app.options('/api/registerUser', function (req, res) {
   res.setHeader("Access-Control-Allow-Headers", "*");
   res.end();
 });
-var requestBody;
-app.post('/api/registerUser', function (req, res, next) {
-  const {username, email, password}=req.body // Destructure all variables one by one
-  const errors = {};
-  const token = '5KZ72CbN8USncapi3rxGWLfy';
-  res.cookie('__vercel_live_token', token, {
-    sameSite: 'None',  // Allows cross-site requests
-    secure: true
-  });
 
- 
+app.post('/api/registerUser', async function (req, res, next) {
+  const { username, email, password } = req.body; // Destructure all variables one by one
+  const errors = {};
 
   // Validate username
   if (!username || username.length < 3) {
@@ -56,22 +48,30 @@ app.post('/api/registerUser', function (req, res, next) {
     errors.password = 'Password must be at least 8 characters long and alphanumeric';
   }
 
-  // Check if the errors object has any keys
+  // Check if there are validation errors
   if (Object.keys(errors).length > 0) {
-    // If there are validation errors, send a 400 response with the errors object
+    // Send a 400 response with the errors object
     return res.status(400).json({ errors });
   }
 
-  // If no errors, return success response
-  return res.status(200).json({ message: 'User registered successfully' });
- 
+  try {
+    // Insert the validated data into the Vercel Postgres database
+    const result = await sql`
+      INSERT INTO users (username, email, password) 
+      VALUES (${username}, ${email}, ${password})
+      RETURNING *;
+    `;
+
+    // Send a success response with the inserted data
+    res.status(200).json({ message: 'User registered successfully', user: result.rows[0] });
+  } catch (error) {
+    console.error('Error inserting user:', error);
+    res.status(500).json({ error: 'Failed to register user', details: error.message });
+  }
 });
 
-
-const PORT = 3000;  // Hardcode the port
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-
