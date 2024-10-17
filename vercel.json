@@ -1,5 +1,11 @@
 {
   "version": 2,
+  "builds": [
+    {
+      "src": "api/app.js",
+      "use": "@vercel/node"
+    }
+  ],
  
   
   "routes": [
@@ -7,5 +13,9 @@
       "src": "/(.*)",
       "dest": "api/app.js"
     }
-  ]
+  ],
+  "env": {
+    "DATABASE_URL": "postgres://default:9oxaONcCAi4d@ep-bold-glade-a46kwyk3-pooler.us-east-1.aws.neon.tech/verceldb?sslmode=require", 
+    "NODE_ENV": "production"
+  }
 }
