@@ -1,10 +1,10 @@
 import { sql } from "@vercel/postgres";
 require('dotenv').config();
-
 import { VercelRequest, VercelResponse } from '@vercel/node';
 var express = require('express');
 var app = express();
 app.use(express.json());
+
 
 const bodyParser = require('body-parser');
 var cors = require('cors');

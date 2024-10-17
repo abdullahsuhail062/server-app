@@ -15,7 +15,7 @@
     }
   ],
   "env": {
-    "DATABASE_URL": "postgres://default:9oxaONcCAi4d@ep-bold-glade-a46kwyk3-pooler.us-east-1.aws.neon.tech/verceldb?sslmode=require", 
+    "DATABASE_URL": "verceldb", 
     "NODE_ENV": "production"
   }
 }
