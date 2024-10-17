@@ -1,6 +1,6 @@
 import { sql } from "@vercel/postgres";
-require('dotenv').config();
-import { VercelRequest, VercelResponse } from '@vercel/node';
+ require('dotenv').config();
+//import { VercelRequest, VercelResponse } from '@vercel/node';
 var express = require('express');
 var app = express();
 app.use(express.json());
@@ -17,6 +17,7 @@ app.use(cors({
   allowedHeaders: ['X-CSRF-Token', 'X-Requested-With', 'Content-Type', 'Authorization'],
   credentials: true
 }));
+process.env.POSTGRES_DATABASE
 app.use((req, res, next) => {
   res.setHeader("Content-Security-Policy", "default-src 'none'; img-src 'self' https://server-app-chi.vercel.app; script-src 'self'; style-src 'self'");
   next();
@@ -72,7 +73,7 @@ app.post('/api/registerUser', async function (req, res, next) {
   }
 });
 
-const PORT = 3000
+const PORT = process.env.POSTGRES_DATABASE
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
