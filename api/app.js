@@ -1,4 +1,4 @@
-import { sql } from '@vercel/postgres';  // Import Vercel Postgres
+import { sql } from "@vercel/postgres";
 import { VercelRequest, VercelResponse } from '@vercel/node';
 var express = require('express');
 var app = express();
@@ -70,7 +70,7 @@ app.post('/api/registerUser', async function (req, res, next) {
   }
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
