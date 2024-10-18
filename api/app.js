@@ -77,9 +77,6 @@ app.post('/api/registerUser', async function (req, res, next) {
     res.status(500).json({ error: 'Failed to register user', details: error.message });
   }
 });
-app.get('/',function(req, res){
-  res.send("Hello users!")
-})
 
 const PORT = process.env.PORT || 3000
 
