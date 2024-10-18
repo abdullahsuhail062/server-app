@@ -1,16 +1,16 @@
 import { sql } from "@vercel/postgres";
 import { config } from 'dotenv';
- require('dotenv').config();
  import dotenv from 'dotenv';
  dotenv.config
-import { VercelRequest, VercelResponse } from '@vercel/node';
-var express = require('express');
+
+import express from 'express'
 var app = express();
 app.use(express.json());
 
 
-const bodyParser = require('body-parser');
-var cors = require('cors');
+import bodyParser from 'body-parser';
+import cors from 'cors';
+
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 app.use(bodyParser.json());
@@ -81,10 +81,10 @@ app.get('/',function(req, res){
   res.send("Hello users!")
 })
 
-const PORT = process.env.PORT || 0
+const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-module.exports =app
+
