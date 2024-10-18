@@ -172,15 +172,23 @@ app.post('/api/registerUser', async (req, res) => {
 
   try {
     // Query to check if username or email exists
-    const result = await sql`
-      SELECT username, email
+    const usernameResult = await sql`
+      SELECT username
       FROM users
-      WHERE username = ${username} OR email = ${email};
+      WHERE username = ${username}`;
+      const emailResult = await sql`
+
+      SELECT email FROM users WHERE email = ${email};
     `;
 
-    if (result.length > 0) {
-      // Username or email already exists
-      return res.status(400).json({ message: 'Username or email already exists' });
+    if (usernameResult.length > 0) {
+      // Username  already exists
+      errors.username = 'Username is already exist'
+    }
+
+     if (emailResult.length > 0) {
+      // email  already exists
+      errors.email = 'Email is already exist'
     }
 
     // If no existing user is found, insert the new user
