@@ -134,6 +134,13 @@ app.use((req, res, next) => {
   res.setHeader("Content-Security-Policy", "default-src 'none'; img-src 'self' https://server-app-chi.vercel.app; script-src 'self'; style-src 'self'");
   next();
 });
+import { Client } from 'pg'; // Import the Client from pg package
+const client = new Client({
+  connectionString: process.env.POSTGRES_DATABASE, // Use the DATABASE_URL environment variable for connection
+});
+
+client.connect();
+process.env.POSTGRES_DATABASE 
 
 
 app.post('/api/registerUser', async (req, res) => {
@@ -210,7 +217,7 @@ app.post('/api/registerUser', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3000; // Default for local testing
+const PORT = 3000 // Default for local testing
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
