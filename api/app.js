@@ -1,7 +1,9 @@
 import { sql } from "@vercel/postgres";
 import { config } from 'dotenv';
  require('dotenv').config();
-//import { VercelRequest, VercelResponse } from '@vercel/node';
+ import dotenv from 'dotenv';
+ dotenv.config
+import { VercelRequest, VercelResponse } from '@vercel/node';
 var express = require('express');
 var app = express();
 app.use(express.json());
@@ -19,7 +21,8 @@ app.use(cors({
   credentials: true
 }));
 config({ path: '.env.development.local' });
-process.env.POSTGRES_DATABASE
+process.env.POSTGRES_DATABASE 
+
 app.use((req, res, next) => {
   res.setHeader("Content-Security-Policy", "default-src 'none'; img-src 'self' https://server-app-chi.vercel.app; script-src 'self'; style-src 'self'");
   next();
