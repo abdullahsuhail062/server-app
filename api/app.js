@@ -134,14 +134,16 @@ app.use((req, res, next) => {
   res.setHeader("Content-Security-Policy", "default-src 'none'; img-src 'self' https://server-app-chi.vercel.app; script-src 'self'; style-src 'self'");
   next();
 });
-res.cookie('__vercel_live_token', token, {
-  httpOnly: true,
-  secure: true, // Cookie is only sent over HTTPS
-  sameSite: 'None' // Allow the cookie to be sent in cross-site contexts
-});
 
 
 app.post('/api/registerUser', async (req, res) => {
+
+  res.cookie('__vercel_live_token', token, {
+    httpOnly: true,
+    secure: true, // Cookie is only sent over HTTPS
+    sameSite: 'None' // Allow the cookie to be sent in cross-site contexts
+  });
+  
   const { username, email, password } = req.body; // Destructure all variables one by one
   const errors = {};
 
