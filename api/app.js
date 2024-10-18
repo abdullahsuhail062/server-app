@@ -21,6 +21,12 @@ app.use(cors({
   credentials: true
 }));
 config({ path: '.env.development.local' });
+import { Client } from 'pg'; // Import the Client from pg package
+const client = new Client({
+  connectionString: process.env.POSTGRES_DATABASE, // Use the DATABASE_URL environment variable for connection
+});
+
+client.connect();
 process.env.POSTGRES_DATABASE 
 
 app.use((req, res, next) => {
@@ -63,18 +69,38 @@ app.post('/api/registerUser', async function (req, res, next) {
   }
 
   try {
-    // Insert the validated data into the Vercel Postgres database
-    const result = await sql`
-      INSERT INTO users (username, email, password) 
-      VALUES (${username}, ${email}, ${password})
-      RETURNING *;
+    // Query to check if username or email exists
+    const checkQuery = `
+      SELECT username, email
+      FROM users
+      WHERE username = $1 OR email = $2
     `;
+    const values = [username, email];
 
-    // Send a success response with the inserted data
-    res.status(200).json({ message: 'User registered successfully', user: result.rows[0] });
+    const result = await client.query(checkQuery, values);
+
+    if (result.rows.length > 0) {
+      // Username or email already exists
+      return res.status(400).json({ message: 'Username or email already exists' });
+    }
+
+    // If no existing user is found, insert the new user
+    const insertQuery = `
+      INSERT INTO users (username, email, password)
+      VALUES ($1, $2, $3)
+      RETURNING id, username, email
+    `;
+    const insertValues = [username, email, password];
+    const insertResult = await client.query(insertQuery, insertValues);
+
+    // Send success response
+    return res.status(201).json({
+      message: 'User registered successfully',
+      user: insertResult.rows[0],
+    });
   } catch (error) {
-    console.error('Error inserting user:', error);
-    res.status(500).json({ error: 'Failed to register user', details: error.message });
+    console.error('Error registering user:', error);
+    return res.status(500).json({ message: 'Internal server error' });
   }
 });
 
