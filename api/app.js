@@ -143,6 +143,7 @@ const client = new Client({
 
 client.connect();
 process.env.POSTGRES_DATABASE 
+process.env.POSTGRES_HOST
 
 
 app.post('/api/registerUser', async (req, res) => {
