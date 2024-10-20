@@ -149,6 +149,7 @@ const client = new Client({
   ssl: {
     rejectUnauthorized: false // This can be set to true if you have a valid certificate
   }
+  connectionTimeoutMillis: 10000
 
 });
 
