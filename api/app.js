@@ -138,12 +138,20 @@ import pkg from 'pg';
 const { Client } = pkg;
 
 const client = new Client({
-  connectionString: process.env.POSTGRES_DATABASE, // Use the DATABASE_URL environment variable for connection
+
+  database: process.env.POSTGRES_DATABASE, // Use the DATABASE_URL environment variable for connection
+  host: process.env.POSTGRES_HOST,
+  password: process.env.POSTGRES_PASSWORD,
+  url: process.env.POSTGRES_URL,
+  prisma: process.env.POSTGRES_PRISMA_URL,
+  pooling: process.env.POSTGRES_URL_NON_POOLING,
+  ssl: process.env.POSTGRES_URL_NO_SSL,
+  user: process.env.POSTGRES_USER
+
 });
 
 client.connect();
 process.env.POSTGRES_DATABASE 
-process.env.POSTGRES_HOST
 
 
 app.post('/api/registerUser', async (req, res) => {
@@ -220,7 +228,7 @@ app.post('/api/registerUser', async (req, res) => {
   }
 });
 
-const PORT = 3000 // Default for local testing
+const PORT =process.env.PORT || 3000 // Default for local testing
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
