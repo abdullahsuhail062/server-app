@@ -112,6 +112,7 @@
 
 
 import dotenv from 'dotenv';
+import bcrypt from 'bcryptjs';  // ES6 import
 dotenv.config({ path: '.env.development.local' });
 
 import express from 'express';
