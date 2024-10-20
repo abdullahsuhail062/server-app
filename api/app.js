@@ -143,6 +143,8 @@ const client = new Client({
   host: process.env.POSTGRES_HOST,
   password: process.env.POSTGRES_PASSWORD,
   url: process.env.POSTGRES_URL,
+  pooling: process.env.POSTGRES_URL_NON_POOLING,
+  prisma: process.env.POSTGRES_PRISMA_URL,
   user: process.env.POSTGRES_USER,
   ssl: {
     rejectUnauthorized: false // This can be set to true if you have a valid certificate
@@ -154,7 +156,7 @@ client.connect();
 
 
 app.post('/api/registerUser', async (req, res) => {
-
+const token = 'rXAPGKlhFRMWFEtztrVsUNmm'
   res.cookie('__vercel_live_token', token, {
     httpOnly: true,
     secure: true, // Cookie is only sent over HTTPS
