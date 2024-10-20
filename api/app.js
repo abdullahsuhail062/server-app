@@ -143,7 +143,10 @@ const client = new Client({
   host: process.env.POSTGRES_HOST,
   password: process.env.POSTGRES_PASSWORD,
   url: process.env.POSTGRES_URL,
-  user: process.env.POSTGRES_USER
+  user: process.env.POSTGRES_USER,
+  ssl: {
+    rejectUnauthorized: false // This can be set to true if you have a valid certificate
+  }
 
 });
 
