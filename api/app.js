@@ -148,7 +148,7 @@ const client = new Client({
   user: process.env.POSTGRES_USER,
   ssl: {
     rejectUnauthorized: false // This can be set to true if you have a valid certificate
-  }
+  },
   connectionTimeoutMillis: 10000
 
 });
