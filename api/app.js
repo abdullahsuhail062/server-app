@@ -138,22 +138,21 @@ import pkg from 'pg';
 const { Client } = pkg;
 
 const client = new Client({
-
-  database: process.env.POSTGRES_DATABASE, // Use the DATABASE_URL environment variable for connection
-  host: process.env.POSTGRES_HOST,
-  password: process.env.POSTGRES_PASSWORD,
-  url: process.env.POSTGRES_URL,
-  pooling: process.env.POSTGRES_URL_NON_POOLING,
-  prisma: process.env.POSTGRES_PRISMA_URL,
-  user: process.env.POSTGRES_USER,
+  host: process.env.POSTGRES_HOST,          // Database host (e.g., 'localhost' or your cloud database host)
+  port: process.env.POSTGRES_PORT,          // Database port (default is 5432 for PostgreSQL)
+  user: process.env.POSTGRES_USER,          // Database username
+  password: process.env.POSTGRES_PASSWORD,  // Database password
+  database: process.env.POSTGRES_DATABASE,  // Database name
   ssl: {
-    rejectUnauthorized: false // This can be set to true if you have a valid certificate
+    rejectUnauthorized: false               // Set to true for production with valid certs
   },
-  connectionTimeoutMillis: 10000
-
+  connectionTimeoutMillis: 10000            // 10 seconds timeout for connecting
 });
 
-client.connect();
+client.connect()
+  .then(() => console.log('Connected to the database!'))
+  .catch(err => console.error('Connection error', err.stack));
+
 
 
 app.post('/api/registerUser', async (req, res) => {
