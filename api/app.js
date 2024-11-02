@@ -85,7 +85,8 @@ const token = 'rXAPGKlhFRMWFEtztrVsUNmm'
   
     if (usernameResult.length > 0) {
       // Username already exists
-      return res.status(400).json({ message: 'Username already exists' });
+      //return res.status(400).json({ message: 'Username already exists' });
+      errors.username = 'Username already exist'
     }
   
     // Query to check if email exists
@@ -96,7 +97,8 @@ const token = 'rXAPGKlhFRMWFEtztrVsUNmm'
   
     if (emailResult.length > 0) {
       // Email already exists
-      return res.status(400).json({ message: 'Email already exists' });
+      //return res.status(400).json({ message: 'Email already exists' });
+      errors.email = 'Email already exist'
     }
   
     // If no existing user is found, insert the new user
