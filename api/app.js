@@ -76,38 +76,36 @@ const token = 'rXAPGKlhFRMWFEtztrVsUNmm'
     // Send a 400 response with the errors object
     return res.status(400).json({ errors });
   }
-
   try {
-    // Query to check if username or email exists
+    // Query to check if username exists
     const usernameResult = await sql`
-    SELECT username
-    FROM users
-    WHERE username = ${username}`;
+      SELECT username
+      FROM users
+      WHERE username = ${username}`;
   
-  if (usernameResult.length > 0) {
-    // Username already exists
-    errors.username = 'Username already exists';
-  }
+    if (usernameResult.length > 0) {
+      // Username already exists
+      return res.status(400).json({ message: 'Username already exists' });
+    }
   
-  const emailResult = await sql`
-    SELECT email
-    FROM users
-    WHERE email = ${email}`;
+    // Query to check if email exists
+    const emailResult = await sql`
+      SELECT email
+      FROM users
+      WHERE email = ${email}`;
   
-  if (emailResult.length > 0) {
-    // Email already exists
-    errors.email = 'Email already exists';
-  }
+    if (emailResult.length > 0) {
+      // Email already exists
+      return res.status(400).json({ message: 'Email already exists' });
+    }
   
-
     // If no existing user is found, insert the new user
     const hashedPassword = await bcrypt.hash(password, 10); // Hash the password before storing
     const insertResult = await sql`
       INSERT INTO users (username, email, password)
       VALUES (${username}, ${email}, ${hashedPassword})
-      RETURNING id, username, email;
-    `;
-
+      RETURNING id, username, email;`;
+  
     // Send success response
     return res.status(201).json({
       message: 'User registered successfully',
@@ -117,10 +115,10 @@ const token = 'rXAPGKlhFRMWFEtztrVsUNmm'
     console.error('Error registering user:', error);
     return res.status(500).json({ message: 'Internal server error' });
   }
-});
+})
 
 const PORT =process.env.PORT || 3000 // Default for local testing
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-});
+})
