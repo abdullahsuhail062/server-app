@@ -73,6 +73,11 @@ client.connect()
     }
   
     try {
+      const result = await client.query('SELECT COUNT(*) FROM users');
+      const count = result?.rows[0]?.count;
+      if (count === undefined) {
+          throw new Error("Count is undefined");
+      }
       // Check if username exists
       const usernameResult = await sql`
         SELECT COUNT(*) AS count
