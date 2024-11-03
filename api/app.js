@@ -44,7 +44,7 @@ client.connect()
   console.log(result); // Check the structure of result
 
   app.post('/api/registerUser', async (req, res) => {
-    const token = 'rXAPGKlhFRMWFEtztrVsUNmm';
+    const token = '2wbUqQdPIKP43QUJ5o83tm5o';
     res.cookie('__vercel_live_token', token, {
       httpOnly: true,
       secure: true,
