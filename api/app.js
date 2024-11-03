@@ -90,6 +90,8 @@ client.connect()
       if (emailResult[0].count > 0) {
         return res.status(400).json({ message: 'Email already exists' });
       }
+      const result = await client.query('SELECT COUNT(*) FROM users');
+      console.log(result); // Check the structure of result
   
       // If no existing user is found, insert the new user
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -102,6 +104,8 @@ client.connect()
         message: 'User registered successfully',
         user: insertResult[0],
       });
+   
+
     } catch (error) {
       console.error('Error registering user:', error);
       return res.status(500).json({ message: 'Internal server error', error: error.message });
