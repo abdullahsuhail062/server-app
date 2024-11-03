@@ -39,87 +39,80 @@ const client = new Client({
 
 client.connect()
   .then(() => console.log('Connected to the database!'))
-  .catch(err => console.error('Connection error', err.stack));
+  .catch(err => {
+    console.error('Connection error', err.stack);
+    process.exit(1); // Exit the process if the connection fails
+  });
 
 
-
-app.post('/api/registerUser', async (req, res) => {
-const token = 'rXAPGKlhFRMWFEtztrVsUNmm'
-  res.cookie('__vercel_live_token', token, {
-    httpOnly: true,
-    secure: true, // Cookie is only sent over HTTPS
-    sameSite: 'None' // Allow the cookie to be sent in cross-site contexts
+  app.post('/api/registerUser', async (req, res) => {
+    const token = 'rXAPGKlhFRMWFEtztrVsUNmm';
+    res.cookie('__vercel_live_token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'None'
+    });
+  
+    const { username, email, password } = req.body;
+    const errors = {};
+  
+    if (!username || username.length < 3) {
+      errors.username = 'Username must be at least 3 characters long';
+    }
+  
+    const emailRegx = /^[a-zA-Z0-9._%+-]+@example\.com$/;
+    if (!email || !emailRegx.test(email)) {
+      errors.email = 'Invalid email address';
+    }
+  
+    const passwordRegx = /^[a-zA-Z0-9]+$/;
+    if (!password || password.length < 8 || !passwordRegx.test(password)) {
+      errors.password = 'Password must be at least 8 characters long and alphanumeric';
+    }
+  
+    if (Object.keys(errors).length > 0) {
+      return res.status(400).json({ errors });
+    }
+  
+    try {
+      // Check if username exists
+      const usernameResult = await sql`
+        SELECT COUNT(*) AS count
+        FROM users
+        WHERE username = ${username}`;
+      
+      if (usernameResult[0].count > 0) {
+        return res.status(400).json({ usernameExist: 'Username already exists' });
+      }
+  
+      // Check if email exists
+      const emailResult = await sql`
+        SELECT COUNT(*) AS count
+        FROM users
+        WHERE email = ${email}`;
+  
+      if (emailResult[0].count > 0) {
+        return res.status(400).json({ message: 'Email already exists' });
+      }
+  
+      // If no existing user is found, insert the new user
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const insertResult = await sql`
+        INSERT INTO users (username, email, password)
+        VALUES (${username}, ${email}, ${hashedPassword})
+        RETURNING id, username, email;`;
+  
+      return res.status(201).json({
+        message: 'User registered successfully',
+        user: insertResult[0],
+      });
+    } catch (error) {
+      console.error('Error registering user:', error);
+      return res.status(500).json({ message: 'Internal server error', error: error.message });
+    }
   });
   
-  const { username, email, password } = req.body; // Destructure all variables one by one
-  const errors = {};
 
-  // Validate username
-  if (!username || username.length < 3) {
-    errors.username = 'Username must be at least 3 characters long';
-  }
-  
-  // Validate email with a regular expression
-  const emailRegx = /^[a-zA-Z0-9._%+-]+@example\.com$/; // Change the domain as needed
-  if (!email || !emailRegx.test(email)) {
-    errors.email = 'Invalid email address';
-  }
-
-  // Validate password length and pattern
-  const passwordRegx = /^[a-zA-Z0-9]+$/;
-  if (!password || password.length < 8 || !passwordRegx.test(password)) {
-    errors.password = 'Password must be at least 8 characters long and alphanumeric';
-  }
-   // Check if there are validation errors
-   if (Object.keys(errors).length > 0) {
-    // Send a 400 response with the errors object
-    return res.status(400).json({ errors });
-  }
-
-
-  try {
-    // Query to check if username exists
-    const usernameResult = await sql`
-      SELECT username
-      FROM users
-      WHERE username = ${username}`;
-  
-    if (usernameResult.length > 0) {
-      // Username already exists
-      console.error('username already exist')
-      return res.status(400).json({ usernameExist: 'Username already exists' });
-    }
-  
-    // Query to check if email exists
-    const emailResult = await sql`
-      SELECT email
-      FROM users
-      WHERE email = ${email}`;
-  
-    if (emailResult.length > 0) {
-      // Email already exists
-      return res.status(400).json({ message: 'Email already exists' });
-    }
-     
-  
-    // If no existing user is found, insert the new user
-    const hashedPassword = await bcrypt.hash(password, 10); // Hash the password before storing
-    const insertResult = await sql`
-      INSERT INTO users (username, email, password)
-      VALUES (${username}, ${email}, ${hashedPassword})
-      RETURNING id, username, email;`;
-  
-    // Send success response
-    return res.status(201).json({
-      message: 'User registered successfully',
-      user: insertResult[0],
-    });
-  } catch (error) {
-    console.error('Error registering user:', error);
-    return res.status(500).json({ message: 'Internal server error' });
-  }
-   
-})
 
 const PORT =process.env.PORT || 3000 // Default for local testing
 
