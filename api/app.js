@@ -40,6 +40,8 @@ const client = new Client({
 client.connect()
   .then(() => console.log('Connected to the database!'))
   .catch(err => console.error('Connection error', err.stack));
+  const result = await client.query('SELECT COUNT(*) FROM users');
+  console.log(result); // Check the structure of result
 
   app.post('/api/registerUser', async (req, res) => {
     const token = 'rXAPGKlhFRMWFEtztrVsUNmm';
@@ -90,8 +92,7 @@ client.connect()
       if (emailResult[0].count > 0) {
         return res.status(400).json({ message: 'Email already exists' });
       }
-      const result = await client.query('SELECT COUNT(*) FROM users');
-      console.log(result); // Check the structure of result
+     
   
       // If no existing user is found, insert the new user
       const hashedPassword = await bcrypt.hash(password, 10);
