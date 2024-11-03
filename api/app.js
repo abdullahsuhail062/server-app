@@ -73,20 +73,17 @@ client.connect()
     }
   
     try {
-      const result = await client.query('SELECT COUNT(*) FROM users');
-      const count = result?.rows[0]?.count;
-      if (count === undefined) {
-          throw new Error("Count is undefined");
-      }
-      // Check if username exists
-      const usernameResult = await sql`
-        SELECT COUNT(*) AS count
-        FROM users
-        WHERE username = ${username}`;
+     
+      const result = await client.query(`SELECT COUNT(*) AS user_count FROM Users WHERE username = ${username}`);
+      const userExists = result.rows[0].user_count > 0;
       
-      if (usernameResult[0].count > 0) {
-        return res.status(400).json({ usernameExist: 'Username already exists' });
-      }
+      if (userExists) {
+          console.log("Username already exists.");
+          return res.status(400).json({message: 'username already exist'})
+      } 
+      
+      
+     
   
       // Check if email exists
       const emailResult = await sql`
