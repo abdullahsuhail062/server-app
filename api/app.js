@@ -86,6 +86,7 @@ const token = 'rXAPGKlhFRMWFEtztrVsUNmm'
   
     if (usernameResult.length > 0) {
       // Username already exists
+      console.error('username already exist')
       return res.status(400).json({ usernameExist: 'Username already exists' });
     }
   
