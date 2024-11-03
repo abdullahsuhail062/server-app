@@ -86,7 +86,7 @@ const token = 'rXAPGKlhFRMWFEtztrVsUNmm'
   
     if (usernameResult.length > 0) {
       // Username already exists
-      return res.status(400).json({ message: 'Username already exists' });
+      return res.status(400).json({ usernameExist: 'Username already exists' });
     }
   
     // Query to check if email exists
