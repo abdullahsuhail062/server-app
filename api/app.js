@@ -79,7 +79,7 @@ client.connect()
       
       if (userExists) {
           console.log("Username already exists.");
-          return res.status(400).json({message: 'username already exist'})
+          return res.status(400).json({usernameExist: 'username already exist'})
       } 
       
       
