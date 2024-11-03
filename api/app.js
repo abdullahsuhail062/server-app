@@ -39,11 +39,7 @@ const client = new Client({
 
 client.connect()
   .then(() => console.log('Connected to the database!'))
-  .catch(err => {
-    console.error('Connection error', err.stack);
-    process.exit(1); // Exit the process if the connection fails
-  });
-
+  .catch(err => console.error('Connection error', err.stack));
 
   app.post('/api/registerUser', async (req, res) => {
     const token = 'rXAPGKlhFRMWFEtztrVsUNmm';
@@ -117,5 +113,4 @@ client.connect()
 const PORT =process.env.PORT || 3000 // Default for local testing
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-})
+})// instead of sending username or email already exist error i
