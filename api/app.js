@@ -70,12 +70,13 @@ const token = 'rXAPGKlhFRMWFEtztrVsUNmm'
   if (!password || password.length < 8 || !passwordRegx.test(password)) {
     errors.password = 'Password must be at least 8 characters long and alphanumeric';
   }
-
-  // Check if there are validation errors
-  if (Object.keys(errors).length > 0) {
+   // Check if there are validation errors
+   if (Object.keys(errors).length > 0) {
     // Send a 400 response with the errors object
     return res.status(400).json({ errors });
   }
+
+
   try {
     // Query to check if username exists
     const usernameResult = await sql`
@@ -100,6 +101,11 @@ const token = 'rXAPGKlhFRMWFEtztrVsUNmm'
       //return res.status(400).json({ message: 'Email already exists' });
       errors.email = 'Email already exist'
     }
+     // Check if there are validation errors
+     if (Object.keys(errors).length > 0) {
+      // Send a 400 response with the errors object
+      return res.status(400).json({ errors });
+    }
   
     // If no existing user is found, insert the new user
     const hashedPassword = await bcrypt.hash(password, 10); // Hash the password before storing
@@ -117,6 +123,7 @@ const token = 'rXAPGKlhFRMWFEtztrVsUNmm'
     console.error('Error registering user:', error);
     return res.status(500).json({ message: 'Internal server error' });
   }
+   
 })
 
 const PORT =process.env.PORT || 3000 // Default for local testing
