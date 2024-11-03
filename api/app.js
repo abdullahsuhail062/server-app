@@ -74,7 +74,7 @@ client.connect()
   
     try {
      
-      const result = await client.query(`SELECT COUNT(*) AS user_count FROM Users WHERE username = ${username}`);
+      const result = await client.query(`SELECT COUNT(*) AS user_count FROM Users WHERE username = '${username}'`);
       const userExists = result.rows[0].user_count > 0;
       
       if (userExists) {
