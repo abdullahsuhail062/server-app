@@ -86,8 +86,7 @@ const token = 'rXAPGKlhFRMWFEtztrVsUNmm'
   
     if (usernameResult.length > 0) {
       // Username already exists
-      //return res.status(400).json({ message: 'Username already exists' });
-      errors.username = 'Username already exist'
+      return res.status(400).json({ message: 'Username already exists' });
     }
   
     // Query to check if email exists
@@ -98,14 +97,9 @@ const token = 'rXAPGKlhFRMWFEtztrVsUNmm'
   
     if (emailResult.length > 0) {
       // Email already exists
-      //return res.status(400).json({ message: 'Email already exists' });
-      errors.email = 'Email already exist'
+      return res.status(400).json({ message: 'Email already exists' });
     }
-     // Check if there are validation errors
-     if (Object.keys(errors).length > 0) {
-      // Send a 400 response with the errors object
-      return res.status(400).json({ errors });
-    }
+     
   
     // If no existing user is found, insert the new user
     const hashedPassword = await bcrypt.hash(password, 10); // Hash the password before storing
