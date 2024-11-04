@@ -51,24 +51,20 @@ client.connect()
     });
   
     const { username, email, password } = req.body;
-    const errors = {};
+    
   
     if (!username || username.length < 3) {
-      errors.username = 'Username must be at least 3 characters long';
+        return res.status(400).json({error: 'username must be at least 3 characters long'})
     }
   
     const emailRegx = /^[a-zA-Z0-9._%+-]+@example\.com$/;
     if (!email || !emailRegx.test(email)) {
-      errors.email = 'Invalid email address';
+      return res.status(400).json({error: "Invalid email address"})
     }
   
     const passwordRegx = /^[a-zA-Z0-9]+$/;
     if (!password || password.length < 8 || !passwordRegx.test(password)) {
-      errors.password = 'Password must be at least 8 characters long and alphanumeric';
-    }
-  
-    if (Object.keys(errors).length > 0) {
-      return res.status(400).json({ errors });
+      return res.status(400).json({error: 'Password must be at least 8 characters long and alphanumeric'})
     }
   
     try {
