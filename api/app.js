@@ -40,8 +40,7 @@ const client = new Client({
 client.connect()
   .then(() => console.log('Connected to the database!'))
   .catch(err => console.error('Connection error', err.stack));
-  const result = await client.query('SELECT COUNT(*) FROM users');
-  console.log(result); // Check the structure of result
+  
 
   app.post('/api/registerUser', async (req, res) => {
     const token = '2wbUqQdPIKP43QUJ5o83tm5o';
@@ -74,10 +73,10 @@ client.connect()
   
     try {
      
-      const result = await client.query(`SELECT COUNT(*) AS user_count FROM Users WHERE username = '${username}'`);
-      const userExists = result.rows[0].user_count > 0;
+      const resultUsername = await client.query(`SELECT COUNT(*) AS user_count FROM Users WHERE username = '${username}'`);
+      const usernameExist = resultUsername.rows[0].user_count > 0;
       
-      if (userExists) {
+      if (usernameExist) {
           console.log("Username already exists.");
           return res.status(400).json({usernameExist: 'username already exist'})
       } 
@@ -86,14 +85,13 @@ client.connect()
      
   
       // Check if email exists
-      const emailResult = await sql`
-        SELECT COUNT(*) AS count
-        FROM users
-        WHERE email = ${email}`;
-  
-      if (emailResult[0].count > 0) {
-        return res.status(400).json({ message: 'Email already exists' });
-      }
+      const resultEmail = await client.query(`SELECT COUNT(*) AS user_count FROM Users WHERE email = '${email}'`);
+      const userEmailExist = resultEmail.rows[0].user_count > 0;
+      
+      if (userExists) {
+          console.log("Email already exists.");
+          return res.status(400).json({userEmailExist: 'Email already exist'})
+      } 
      
   
       // If no existing user is found, insert the new user
