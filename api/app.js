@@ -70,12 +70,12 @@ client.connect()
       errors.password = 'Password must be at least 8 characters long and alphanumeric';
     }
   
-  //   // If there are any errors, return them
-  //   if (Object.keys(errors).length > 0) {
-  //     return res.status(400).json(errors);
-  //   }
+    // If there are any errors, return them
+    if (Object.keys(errors).length > 0) {
+      return res.status(400).json(errors);
+    }
   
-  
+  const dataBaseValidationErrors ={}
 
 
   
@@ -86,7 +86,7 @@ client.connect()
       
       if (usernameExist) {
           console.log("Username already exists.");
-          return res.status(400).json({usernameExist: 'username already exist'})
+          dataBaseValidationErrors.usernameExist = 'Username already exist'
       } 
       
       
@@ -96,10 +96,10 @@ client.connect()
       const resultEmail = await client.query(`SELECT COUNT(*) AS user_count FROM Users WHERE email = '${email}'`);
       const userEmailExist = resultEmail.rows[0].user_count > 0;
       
-      if (userExists) {
+      if (userEmailExist) {
           console.log("Email already exists.");
-          return res.status(400).json({userEmailExist: 'Email already exist'})
-      } 
+          dataBaseValidationErrors.userEmailExist = 'Email already exist'
+        } 
      
   
       // If no existing user is found, insert the new user
