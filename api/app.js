@@ -100,6 +100,10 @@ client.connect()
           console.log("Email already exists.");
           dataBaseValidationErrors.userEmailExist = 'Email already exist'
         } 
+         // If there are any errors, return them
+    if (Object.keys(dataBaseValidationErrors).length > 0) {
+      return res.status(401).json(dataBaseValidationErrors);
+    }
      
   
       // If no existing user is found, insert the new user
