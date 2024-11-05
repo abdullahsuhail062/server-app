@@ -49,23 +49,35 @@ client.connect()
       secure: true,
       sameSite: 'None'
     });
-  
+    const errors = {};  
     const { username, email, password } = req.body;
     
-  
+
+    // Validate username
     if (!username || username.length < 3) {
-        return res.status(400).json({error: 'username must be at least 3 characters long'})
+      errors.username = 'username must be at least 3 characters long';
     }
   
+    // Validate email
     const emailRegx = /^[a-zA-Z0-9._%+-]+@example\.com$/;
     if (!email || !emailRegx.test(email)) {
-      return res.status(400).json({error: "Invalid email address"})
+      errors.email = 'Invalid email address';
     }
   
+    // Validate password
     const passwordRegx = /^[a-zA-Z0-9]+$/;
     if (!password || password.length < 8 || !passwordRegx.test(password)) {
-      return res.status(400).json({error: 'Password must be at least 8 characters long and alphanumeric'})
+      errors.password = 'Password must be at least 8 characters long and alphanumeric';
     }
+  
+  //   // If there are any errors, return them
+  //   if (Object.keys(errors).length > 0) {
+  //     return res.status(400).json(errors);
+  //   }
+  
+  
+
+
   
     try {
      
@@ -110,8 +122,9 @@ client.connect()
   });
   
 
-
-const PORT =process.env.PORT || 3000 // Default for local testing
-
+  
+const PORT = 3000
 app.listen(PORT, () => {
+  console.log('app running on port 3000');
+  
 })// instead of sending username or email already exist error i
