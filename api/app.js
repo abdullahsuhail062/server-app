@@ -85,7 +85,6 @@ client.connect()
       const usernameExist = resultUsername.rows[0].user_count > 0;
       
       if (usernameExist) {
-          console.log("Username already exists.");
           dataBaseValidationErrors.usernameExist = 'Username already exist'
       } 
       
@@ -97,7 +96,6 @@ client.connect()
       const userEmailExist = resultEmail.rows[0].user_count > 0;
       
       if (userEmailExist) {
-          console.log("Email already exists.");
           dataBaseValidationErrors.userEmailExist = 'Email already exist'
         } 
          // If there are any errors, return them
@@ -129,8 +127,8 @@ client.connect()
   
 
   
-const PORT = 3000
-app.listen(PORT, () => {
-  console.log('app running on port 3000');
+// const PORT = 3000
+// app.listen(PORT, () => {
+//   console.log('app running on port 3000');
   
-})// instead of sending username or email already exist error i
+// })
