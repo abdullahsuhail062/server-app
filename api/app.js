@@ -102,6 +102,8 @@ client.connect()
         } 
          // If there are any errors, return them
     if (Object.keys(dataBaseValidationErrors).length > 0) {
+      console.log(dataBaseValidationErrors);
+      
       return res.status(401).json(dataBaseValidationErrors);
     }
      
