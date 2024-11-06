@@ -127,8 +127,8 @@ client.connect()
   
 
   
-// const PORT = 3000
-// app.listen(PORT, () => {
-//   console.log('app running on port 3000');
+const PORT = 3000
+app.listen(PORT, () => {
+  console.log('app running on port 3000');
   
-// })
+})
