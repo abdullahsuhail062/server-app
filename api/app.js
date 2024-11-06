@@ -107,16 +107,16 @@ client.connect()
      
   
       // If no existing user is found, insert the new user
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const insertResult = await sql`
-        INSERT INTO users (username, email, password)
-        VALUES (${username}, ${email}, ${hashedPassword})
-        RETURNING id, username, email;`;
+      // const hashedPassword = await bcrypt.hash(password, 10);
+      // const insertResult = await sql`
+      //   INSERT INTO users (username, email, password)
+      //   VALUES (${username}, ${email}, ${hashedPassword})
+      //   RETURNING id, username, email;`;
   
-      return res.status(201).json({
-        message: 'User registered successfully',
-        user: insertResult[0],
-      });
+      // return res.status(201).json({
+      //   message: 'User registered successfully',
+      //   user: insertResult[0],
+      // });
    
 
     } catch (error) {
