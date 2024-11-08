@@ -110,7 +110,7 @@ client.connect()
       const hashedPassword = await bcrypt.hash(password, 10);
       const insertResult = await sql`
         INSERT INTO users (username, email, password)
-        VALUES (${usernamefdd}, ${emailssss}, ${hashedPasswordsss})
+        VALUES (${username}, ${email}, ${hashedPasswordsss})
         RETURNING id, username, email;`;
   
       return res.status(201).json({
