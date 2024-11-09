@@ -258,12 +258,15 @@ app.post('/api/loginUser', async (req, res) => {
 
     if (!user) {
       errors.email = 'Invalid email or password' 
+      console.log(errors.email)
     }
 
     // Verify password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       errors.password = 'Invalid email or password'
+      console.log(errors.password)
+
     }
     if (Object.keys(errors).length >0) {
       return res.status(400).json(errors)
