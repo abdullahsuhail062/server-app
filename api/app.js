@@ -169,7 +169,7 @@ const client = new Client({
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DATABASE,
-  
+
   ssl: {
     rejectUnauthorized: false
   },
@@ -278,7 +278,7 @@ app.post('/api/loginUser', async (req, res) => {
     const token = jwt.sign(
       { id: user.id, email: user.email },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRATION || '1h' }
+      { expiresIn: '1h' }
     );
 
     return res.json({ message: 'Login successful', token });
