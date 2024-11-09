@@ -249,7 +249,7 @@ app.post('/api/registerUser', async (req, res) => {
 // Login User Route
 app.post('/api/loginUser', async (req, res) => {
   const { email, password } = req.body;
-  errors ={}
+ const errors ={}
 
   try {
     // Check if user exists
