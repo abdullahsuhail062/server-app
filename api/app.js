@@ -287,9 +287,30 @@ app.post('/api/loginUser', async (req, res) => {
     return res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 });
+const authMiddleware = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  
+  if (!authHeader) {
+    console.log('No token provided');
+    
+    return res.status(401).json({ message: 'No token provided' });
+  }
 
-app.get('/api/fetchUserProfile', async (res, req)=> {
-  const userId = req.user.id; // Retrieve user ID from the request object or token
+  const token = authHeader.split(' ')[1];
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.userId = decoded.userId;            // Extract user ID from token
+    next();
+  } catch (error) {
+    console.log('Invalid or expired token');
+    
+    res.status(401).json({ message: 'Invalid or expired token' });
+  }
+};
+
+app.get('/api/fetchUserProfile',authMiddleware,async (res, req)=> {
+  const userId = req.userId; // Retrieve user ID from the request object or token
 
   try {
     const result = await client.query(
@@ -301,7 +322,7 @@ app.get('/api/fetchUserProfile', async (res, req)=> {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const user = result.rows[0].id;
+    const user = result.rows[0];
     res.json(user);
   } catch (error) {
     console.error('Error fetching user profile:', error);
