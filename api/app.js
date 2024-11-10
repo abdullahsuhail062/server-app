@@ -301,7 +301,7 @@ app.get('/api/fetchUserProfile', async (res, req)=> {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const user = result.rows[0];
+    const user = result.rows[0].id;
     res.json(user);
   } catch (error) {
     console.error('Error fetching user profile:', error);
