@@ -309,7 +309,7 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-app.get('/api/fetchUserProfile',authMiddleware,async (res, req)=> {
+app.get('/api/fetchUserProfile',authMiddleware,async (req, res)=> {
   const userId = req.userId; // Retrieve user ID from the request object or token
 
   try {
