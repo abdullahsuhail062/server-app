@@ -298,13 +298,13 @@ const authMiddleware = (req, res, next) => {
   }
 
   const token = authHeader.split(' ')[1];
-  console.log(token,'tokenhdfh');
   
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log(decoded.userId);
+    
     req.userId = decoded.userId;  
-    console.log(req.userId);
               // Extract user ID from token
     next();
   } catch (error) {
