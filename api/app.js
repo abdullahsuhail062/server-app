@@ -289,7 +289,6 @@ app.post('/api/loginUser', async (req, res) => {
 });
 const authMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization;
-  console.log(authHeader);
   
   
   if (!authHeader) {
@@ -299,6 +298,8 @@ const authMiddleware = (req, res, next) => {
   }
 
   const token = authHeader.split(' ')[1];
+  console.log(token);
+  
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
