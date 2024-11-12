@@ -326,8 +326,7 @@ app.get('/api/fetchUserProfile',authMiddleware,async (req, res)=> {
     if (result.rows.length === 0) {
       return res.status(404).json({ message: 'User not found' });
     }
-
-    const user = result.rows[0];
+     const user = result.rows[0];
     res.json(user);
   } catch (error) {
     console.error('Error fetching user profile:', error);
