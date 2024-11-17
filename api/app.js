@@ -117,7 +117,6 @@ console.log('Generated token:', token);
 // Return the response with the token
 return res.status(201).json({
   message: 'User registered successfully',
-  token,
   user: newUser,
 });
 
