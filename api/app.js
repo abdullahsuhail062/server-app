@@ -46,8 +46,8 @@ client.connect()
 
 // Register User Route
 app.post('/api/registerUser', async (req, res) => {
-  const token = '2wbUqQdPIKP43QUJ5o83tm5o';
-  res.cookie('__vercel_live_token', token, {
+  const cokieToken = '2wbUqQdPIKP43QUJ5o83tm5o';
+  res.cookie('__vercel_live_token', cokieToken, {
     httpOnly: true,
     secure: true,
     sameSite: 'None'
@@ -55,6 +55,14 @@ app.post('/api/registerUser', async (req, res) => {
 
   const errors = {};  
   const { username, email, password } = req.body;
+    const newUser = await User.create({ username, email, password });
+
+    // Generate JWT
+    const token = jwt.sign(
+      { id: user.id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
 
   if (!username || username.length < 3) {
     errors.username = 'username must be at least 3 characters long';
@@ -102,7 +110,7 @@ app.post('/api/registerUser', async (req, res) => {
       RETURNING id, username, email;`;
 
     return res.status(201).json({
-      message: 'User registered successfully',
+      message: 'User registered successfully',token,
       user: insertResult[0],
     });
   } catch (error) {
