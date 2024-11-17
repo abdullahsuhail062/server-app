@@ -96,27 +96,12 @@ app.post('/api/registerUser', async (req, res) => {
       return res.status(401).json(dataBaseValidationErrors);
     }
 
-    // const hashedPassword = await bcrypt.hash(password, 10);
-    // const insertResult = await sql`
-    //   INSERT INTO users (username, email, password)
-    //   VALUES (${username}, ${email}, ${hashedPassword})
-    //   RETURNING id, username, email;`;
-    //   const token = jwt.sign(
-    //     { id: user.id, email: user.email },
-    //     process.env.JWT_SECRET,
-    //     { expiresIn: '1h' });
-    //     console.log(token);
-
-    // return res.status(201).json({
-    //   message: 'User registered successfully',token,
-    //   user: insertResult[0],
-    // });
     const hashedPassword = await bcrypt.hash(password, 10);
     const insertResult = await sql`
-  INSERT INTO users (username, email, password)
-  VALUES (${username}, ${email}, ${hashedPassword})
-  RETURNING id, username, email;`;
-
+      INSERT INTO users (username, email, password)
+      VALUES (${username}, ${email}, ${hashedPassword})
+      RETURNING id, username, email;`;
+    
 // Extract the user details from the insertResult
 const newUser = insertResult[0];
 
