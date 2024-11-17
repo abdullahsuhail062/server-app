@@ -111,6 +111,7 @@ app.post('/api/registerUser', async (req, res) => {
     //   message: 'User registered successfully',token,
     //   user: insertResult[0],
     // });
+    const hashedPassword = await bcrypt.hash(password, 10);
     const insertResult = await sql`
   INSERT INTO users (username, email, password)
   VALUES (${username}, ${email}, ${hashedPassword})
