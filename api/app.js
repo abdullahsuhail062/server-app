@@ -104,8 +104,8 @@ app.post('/api/registerUser', async (req, res) => {
       const token = jwt.sign(
         { id: user.id, email: user.email },
         process.env.JWT_SECRET,
-        { expiresIn: '1h' }
-      );
+        { expiresIn: '1h' });
+        console.log(token);
 
     return res.status(201).json({
       message: 'User registered successfully',token,
