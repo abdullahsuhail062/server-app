@@ -55,14 +55,7 @@ app.post('/api/registerUser', async (req, res) => {
 
   const errors = {};  
   const { username, email, password } = req.body;
-    const newUser = await User.create({ username, email, password });
 
-    // Generate JWT
-    const token = jwt.sign(
-      { id: user.id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
 
   if (!username || username.length < 3) {
     errors.username = 'username must be at least 3 characters long';
@@ -108,6 +101,11 @@ app.post('/api/registerUser', async (req, res) => {
       INSERT INTO users (username, email, password)
       VALUES (${username}, ${email}, ${hashedPassword})
       RETURNING id, username, email;`;
+      const token = jwt.sign(
+        { id: user.id, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' }
+      );
 
     return res.status(201).json({
       message: 'User registered successfully',token,
