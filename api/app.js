@@ -106,11 +106,11 @@ app.post('/api/registerUser', async (req, res) => {
 const newUser = insertResult[0];
 
 // Generate the token using the new user's details
-const token = jwt.sign(
-  { id: newUser.id, email: newUser.email },
-  process.env.JWT_SECRET,
-  { expiresIn: '1h' }
-);
+// const token = jwt.sign(
+//   { id: newUser.id, email: newUser.email },
+//   process.env.JWT_SECRET,
+//   { expiresIn: '1h' }
+// );
 
 console.log('Generated token:', token);
 
