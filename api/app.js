@@ -105,7 +105,7 @@ app.post('/api/registerUser', async (req, res) => {
       console.log(insertResult)
     
 // Extract the user details from the insertResult
-const newUser = insertResult[0];
+const newUser = insertResult.rows[0];
 
 //Generate the token using the new user's details
 const token = jwt.sign(
