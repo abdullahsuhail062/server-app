@@ -100,7 +100,9 @@ app.post('/api/registerUser', async (req, res) => {
     const insertResult = await sql`
       INSERT INTO users (username, email, password)
       VALUES (${username}, ${email}, ${hashedPassword})
-      RETURNING id, username, email;`;
+      RETURNING id, username, email`;
+      
+      console.log(insertResult)
     
 // Extract the user details from the insertResult
 const newUser = insertResult[0];
