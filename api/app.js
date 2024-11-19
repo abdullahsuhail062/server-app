@@ -118,7 +118,7 @@ console.log('Generated token:', token);
 
 // Return the response with the token
 return res.status(201).json({
-  message: 'User registered successfully',token
+  message: 'User registered successfully',token   
 });
 
   } catch (error) {
@@ -213,6 +213,36 @@ app.get('/api/fetchUserProfile',authMiddleware,async (req, res)=> {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+
+function authenticateUser(req, res, next) {
+  const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+  if (!token) {
+    return res.status(401).json({ message: 'Authentication required' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded; // Add user info to the request
+    next();
+  } catch (err) {
+    res.status(403).json({ message: 'Invalid or expired token' });
+  }
+}
+
+app.delete('/api/deleteAccount', authenticateUser, async (req, res) => {
+  try {
+    const userId = req.user.id; // Assuming `req.user` is populated by middleware
+
+    // Delete the user from the database
+    await client.query('DELETE FROM Users WHERE id = $1', [userId]);
+
+    res.status(200).json({ message: 'Account deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting account:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 
 
 
