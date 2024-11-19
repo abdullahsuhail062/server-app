@@ -182,7 +182,6 @@ const authMiddleware = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(decoded);
     
     req.userId = decoded.id 
               // Extract user ID from token
@@ -215,11 +214,10 @@ app.get('/api/fetchUserProfile',authMiddleware,async (req, res)=> {
 });
 
 function authenticateUser(req, res, next) {
-  const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+  const token = req.headers.authorization?.split(' ')[1];
   
   
   if (!token) {
-    console.log(token);
     return res.status(401).json({ message: 'Authentication required' });
   }
 
