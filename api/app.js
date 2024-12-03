@@ -141,6 +141,11 @@ app.post('/api/loginUser', async (req, res) => {
       errors.email = 'Invalid email or password' 
       console.log(errors.email)
     }
+    if (user.rows.length===0) {
+      errors.noUserExist = 'User does not exist'
+      
+    }
+   
 
     // Verify password
     const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -238,11 +243,34 @@ app.delete('/api/deleteAccount', authenticateUser, async (req, res) => {
     await client.query('DELETE FROM Users WHERE id = $1', [userId]);
 
     res.status(200).json({ message: 'Account deleted successfully' });
+    console.log('Account deleted successfully');
+    
   } catch (error) {
     console.error('Error deleting account:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+
+app.post('/tasks', async (req, res) => {
+  const { description } = req.body;
+
+  if (!description) {
+      return res.status(400).json({ error: 'Description is required' });
+  }
+
+  try {
+      const result = await client.query(
+          'INSERT INTO tasks (description) VALUES ($1) RETURNING *',
+          [description]
+      );
+      res.status(201).json(result.rows[0]);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 
 
 
