@@ -141,7 +141,7 @@ app.post('/api/loginUser', async (req, res) => {
       errors.email = 'Invalid email or password' 
       console.log(errors.email)
     }
-    if (user[0].length===0) {
+    if (user.length===0) {
       errors.noUserExist = 'User does not exist'
       
     }
