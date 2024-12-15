@@ -253,6 +253,8 @@ app.delete('/api/deleteAccount', authenticateUser, async (req, res) => {
 
 app.post('/api/tasks', async (req, res) => {
   const { description } = req.body;
+  console.log(description);
+  
 
   if (!description) {
       return res.status(400).json({ error: 'Description is required' });
