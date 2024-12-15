@@ -251,7 +251,7 @@ app.delete('/api/deleteAccount', authenticateUser, async (req, res) => {
   }
 });
 
-app.post('api/tasks', async (req, res) => {
+app.post('/api/tasks', async (req, res) => {
   const { description } = req.body;
 
   if (!description) {
