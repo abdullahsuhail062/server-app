@@ -253,8 +253,12 @@ app.delete('/api/deleteAccount', authenticateUser, async (req, res) => {
 
 app.post('/api/tasks', async (req, res) => {
   const { description } = req.body;
+  const {title}= req.body;
   console.log(req.body);
   
+  if (!title){
+   return res.status(400).json({error: 'Tittle is required'})
+  }
 
   if (!description) {
       return res.status(400).json({ error: 'Description is required' });
@@ -262,7 +266,7 @@ app.post('/api/tasks', async (req, res) => {
 
   try {
       const result = await client.query(
-          'INSERT INTO tasks (description) VALUES ($1) RETURNING *',
+          'INSERT INTO tasks (description,title) VALUES ($1,$2) RETURNING *',
           [description]
       );
       res.status(201).json(result.rows[0]);
