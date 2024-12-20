@@ -267,7 +267,7 @@ app.post('/api/tasks', async (req, res) => {
   try {
       const result = await client.query(
           'INSERT INTO tasks (description,title) VALUES ($1,$2) RETURNING *',
-          [description]
+          [description,title]
       );
       res.status(201).json(result.rows[0]);
   } catch (error) {
