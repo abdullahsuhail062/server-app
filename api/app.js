@@ -278,7 +278,7 @@ app.post('/api/tasks', async (req, res) => {
   }
 });
 
-app.put('/api/tasks/:taskId', async (req, res) => {
+app.put('/api/updateTask/:taskId', async (req, res) => {
   const { taskId } = req.params;
   const { description, title } = req.body;
 
