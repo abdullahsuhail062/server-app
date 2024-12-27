@@ -278,43 +278,29 @@ app.post('/api/tasks', async (req, res) => {
   }
 });
 
-// app.post('/api/updateText', (req, res) => {
-//   const { text } = req.body;
+app.put('/api/tasks/:taskId', async (req, res) => {
+  const { taskId } = req.params;
+  const { description, title } = req.body;
 
-//   // Example database update logic
-//   const query = 'UPDATE tasks SET description = $1 WHERE id = $2 RETURNING *';
-//   //const values = [text, 1]; // Replace with dynamic ID if necessary
+  try {
+      const result = await client.query(
+          'UPDATE tasks SET description = $1, title = $2 WHERE id = $3 RETURNING *',
+          [description, title, taskId]
+      );
 
-//   async function updateTask(req, res) {
-//     const { description, title, taskId } = req.body; // Assume these are sent in the request body
-  
-//     const query = `
-//       UPDATE tasks
-//       SET description = $1, title = $2
-//       WHERE id = $3
-//       RETURNING *;
-//     `;
-//     const values = [description, title, taskId];
-  
-//     try {
-//       // Connect to the database
-//       await client.connect();
-  
-//       // Execute the query
-//       const result = await client.query(query, values);
-  
-//       // Respond with the updated data
-//       res.json({ success: true, data: result.rows });
-//     } catch (error) {
-//       console.error('Database error:', error);
-//       res.status(500).json({ success: false, error: 'Database error' });
-//     } finally {
-//       // Ensure the client is disconnected
-//       await client.end();
-//     }
-//   }
-  
-// });
+      if (result.rows.length > 0) {
+          res.status(200).json(result.rows[0]);
+      } else {
+          res.status(404).json({ error: 'Task not found' });
+      }
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
 
 
 
