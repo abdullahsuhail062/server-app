@@ -278,43 +278,43 @@ app.post('/api/tasks', async (req, res) => {
   }
 });
 
-app.post('/api/updateText', (req, res) => {
-  const { text } = req.body;
+// app.post('/api/updateText', (req, res) => {
+//   const { text } = req.body;
 
-  // Example database update logic
-  const query = 'UPDATE tasks SET description = $1 WHERE id = $2 RETURNING *';
-  //const values = [text, 1]; // Replace with dynamic ID if necessary
+//   // Example database update logic
+//   const query = 'UPDATE tasks SET description = $1 WHERE id = $2 RETURNING *';
+//   //const values = [text, 1]; // Replace with dynamic ID if necessary
 
-  async function updateTask(req, res) {
-    const { description, title, taskId } = req.body; // Assume these are sent in the request body
+//   async function updateTask(req, res) {
+//     const { description, title, taskId } = req.body; // Assume these are sent in the request body
   
-    const query = `
-      UPDATE tasks
-      SET description = $1, title = $2
-      WHERE id = $3
-      RETURNING *;
-    `;
-    const values = [description, title, taskId];
+//     const query = `
+//       UPDATE tasks
+//       SET description = $1, title = $2
+//       WHERE id = $3
+//       RETURNING *;
+//     `;
+//     const values = [description, title, taskId];
   
-    try {
-      // Connect to the database
-      await client.connect();
+//     try {
+//       // Connect to the database
+//       await client.connect();
   
-      // Execute the query
-      const result = await client.query(query, values);
+//       // Execute the query
+//       const result = await client.query(query, values);
   
-      // Respond with the updated data
-      res.json({ success: true, data: result.rows });
-    } catch (error) {
-      console.error('Database error:', error);
-      res.status(500).json({ success: false, error: 'Database error' });
-    } finally {
-      // Ensure the client is disconnected
-      await client.end();
-    }
-  }
+//       // Respond with the updated data
+//       res.json({ success: true, data: result.rows });
+//     } catch (error) {
+//       console.error('Database error:', error);
+//       res.status(500).json({ success: false, error: 'Database error' });
+//     } finally {
+//       // Ensure the client is disconnected
+//       await client.end();
+//     }
+//   }
   
-});
+// });
 
 
 
