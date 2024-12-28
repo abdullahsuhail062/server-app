@@ -301,16 +301,26 @@ app.put('/api/updateTask/:taskId', async (req, res) => {
 });
 
 
+// Endpoint to delete a task by id
+app.delete('/api/deleteTask', async (req, res) => {
+  //const { id } = req.params; 
 
+  try {
+    const result = await client.query('DELETE FROM tasks WHERE id = $1 RETURNING *', [id]);
 
+    if (result.rowCount === 0) {
+      return res.status(404).json({ success: false, message: 'Task not found' });
+    }
 
+    res.status(200).json({ success: true, message: 'Task deleted successfully', deletedTask: result.rows[0] });
+  } catch (error) {
+    console.error('Error deleting task:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+});
 
-
-
-
-
-
+// Start the server
 const PORT = 3000;
 app.listen(PORT, () => {
-  console.log(`App running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
