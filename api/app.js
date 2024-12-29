@@ -303,10 +303,10 @@ app.put('/api/updateTask/:taskId', async (req, res) => {
 
 // Endpoint to delete a task by id
 app.delete('/api/deleteTask/:taskId', async (req, res) => {
-  const { id } = req.params; 
+  const { taskId } = req.params; // Corrected to match the route parameter name
 
   try {
-    const result = await client.query('DELETE FROM tasks WHERE id = $1 RETURNING *',[id]);
+    const result = await client.query('DELETE FROM tasks WHERE id = $1 RETURNING *', [taskId]);
 
     if (result.rowCount === 0) {
       return res.status(404).json({ success: false, message: 'Task not found' });
@@ -318,6 +318,7 @@ app.delete('/api/deleteTask/:taskId', async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 });
+
 
 // Start the server
 const PORT = 3000;
