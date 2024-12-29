@@ -302,11 +302,11 @@ app.put('/api/updateTask/:taskId', async (req, res) => {
 
 
 // Endpoint to delete a task by id
-app.delete('/api/deleteTask', async (req, res) => {
-  //const { id } = req.params; 
+app.delete('/api/deleteTask/:taskId', async (req, res) => {
+  const { id } = req.params; 
 
   try {
-    const result = await client.query('DELETE FROM tasks WHERE id = $1 RETURNING *');
+    const result = await client.query('DELETE FROM tasks WHERE id = $1 RETURNING *',[id]);
 
     if (result.rowCount === 0) {
       return res.status(404).json({ success: false, message: 'Task not found' });
