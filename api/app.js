@@ -302,7 +302,7 @@ app.put('/api/updateTask/:taskId', async (req, res) => {
 
 
 // Endpoint to delete a task by id
-app.delete('/api/deleteTask', async (req, res) => {
+app.delete('/api/deleteTaske', async (req, res) => {
   const { taskId } = req.body; // Corrected to match the route parameter name
 
   try {
