@@ -303,8 +303,10 @@ app.put('/api/updateTask/:taskId', async (req, res) => {
 
 // Endpoint to delete a task by id
 app.delete('/api/deleteTask', async (req, res) => {
-  const { taskId } = req.body; // Corrected to match the route parameter name
-
+  const taskId = req.query.taskId; // Retrieve taskId from query params
+  if (!taskId) {
+    return res.status(400).json({ error: 'Task ID is required' });
+  }
   try {
     const result = await client.query('DELETE FROM tasks WHERE id = $1 RETURNING *', [taskId]);
 
