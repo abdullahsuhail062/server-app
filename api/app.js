@@ -303,23 +303,32 @@ app.put('/api/updateTask/:taskId', async (req, res) => {
 
 // Endpoint to delete a task by id
 app.delete('/api/deleteTask', async (req, res) => {
-  const taskId = req.query.taskId; // Retrieve taskId from query params
-  if (!taskId) {
-    return res.status(400).json({ error: 'Task ID is required' });
+  const taskTitle = req.query.title; // Retrieve taskTitle from query params
+  if (!taskTitle) {
+    return res.status(400).json({ error: 'Task title is required' });
   }
+
   try {
-    const result = await client.query('DELETE FROM tasks WHERE id = $1 RETURNING *', [taskId]);
+    const result = await client.query(
+      'DELETE FROM tasks WHERE title = $1 RETURNING *', 
+      [taskTitle]
+    );
 
     if (result.rowCount === 0) {
       return res.status(404).json({ success: false, message: 'Task not found' });
     }
 
-    res.status(200).json({ success: true, message: 'Task deleted successfully', deletedTask: result.rows[0] });
+    res.status(200).json({
+      success: true,
+      message: 'Task deleted successfully',
+      deletedTask: result.rows[0], // Return details of the deleted task
+    });
   } catch (error) {
     console.error('Error deleting task:', error);
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 });
+
 
 
 // Start the server
