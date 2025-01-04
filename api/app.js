@@ -266,7 +266,7 @@ app.post('/api/tasks', async (req, res) => {
 
   try {
       const result = await client.query(
-          'INSERT INTO tasks (description,title) VALUES ($1,$2) RETURNING *',
+          'INSERT INTO tasks (title,description) VALUES ($1,$2) RETURNING *',
           [description,title]
 
       );
@@ -278,15 +278,13 @@ app.post('/api/tasks', async (req, res) => {
   }
 });
 
-app.put('/api/updateTask/:taskId', async (req, res) => {
-  const { taskId } = req.params;
-  console.log(taskId)
+app.put('/api/updateTask', async (req, res) => {
   const { description, title } = req.body;
 
   try {
       const result = await client.query(
-          'UPDATE tasks SET description = $1, title = $2 WHERE id = $3 RETURNING *',
-          [description, title, taskId]
+          'UPDATE tasks SET title = $1, description = $2 WHERE title =$3  RETURNING *',
+          [description, title,title]
       );
 
       if (result.rows.length > 0) {
