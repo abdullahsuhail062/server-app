@@ -333,7 +333,7 @@ app.delete('/api/deleteTask', async (req, res) => {
   }
 });
 
-app.put('/api/taskCompletion', async (req, res) => {
+app.put('/api/taskCompeletion', async (req, res) => {
   const { completed, taskId } = req.body; // Extract completed status and taskId from the request body
 
   console.log('Received data:', { completed, taskId });
