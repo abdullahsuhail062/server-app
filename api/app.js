@@ -333,34 +333,38 @@ app.delete('/api/deleteTask', async (req, res) => {
   }
 });
 
-app.put('/api/taskCompeletion', async (req, res) => {
-   // Get task ID from URL parameter
-  const { completed,taskId } = req.body; // Get completion status from request body
-    console.log(completed,taskId);
-    
-  if (typeof completed ==='boolean') {
-    return res.status(400).json({ error: 'Invalid completion status' });
+app.put('/api/taskCompletion', async (req, res) => {
+  const { completed, taskId } = req.body; // Extract completed status and taskId from the request body
+
+  console.log('Received data:', { completed, taskId });
+
+  // Validate input
+  if (typeof completed !== 'boolean') {
+    return res.status(400).json({ error: 'Invalid completion status. Must be a boolean.' });
+  }
+
+  if (!taskId) {
+    return res.status(400).json({ error: 'Task ID is required.' });
   }
 
   try {
+    // Update task completion status
     const result = await client.query(
       'UPDATE tasks SET completed = $1 WHERE id = $2 RETURNING *',
       [completed, taskId]
     );
 
     if (result.rowCount === 0) {
-      return res.status(404).json({ error: 'Task not found' });
+      return res.status(404).json({ error: 'Task not found.' });
     }
 
+    // Respond with the updated task
     res.status(200).json({ success: true, updatedTask: result.rows[0] });
   } catch (error) {
     console.error('Error updating task completion:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error.' });
   }
 });
-
-
-
 
 // Start the server
 const PORT = 3000;
