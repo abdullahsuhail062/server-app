@@ -281,7 +281,7 @@ app.post('/api/tasks', async (req, res) => {
 app.put('/api/updateTask', async (req, res) => {
   const { description, title,taskId } = req.body;
   if (!description || !title || !taskId) {
-    return res.status(400).json({ error: 'Description, title, and taskId are required' });
+    return res.status(400).json({ error: 'Description, title, and taskId are required',taskId });
   }
   
 
