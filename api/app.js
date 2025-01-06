@@ -305,7 +305,7 @@ app.put('/api/updateTask', async (req, res) => {
 
 // Endpoint to delete a task by id
 app.delete('/api/deleteTask', async (req, res) => {
-  const {taskId} = req.body; // Retrieve taskTitle from query params
+  const taskId = req.query.id; // Retrieve taskTitle from query params
   if (!taskId) {
     return res.status(400).json({ error: 'Task ID is required' });
   }
