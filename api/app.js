@@ -279,13 +279,13 @@ app.post('/api/tasks', async (req, res) => {
 });
 
 app.put('/api/updateTask', async (req, res) => {
-  const { description, title } = req.body;
-  const updatedTitle =title
+  const { description, title,updatedTaskTitle } = req.body;
+  
 
   try {
       const result = await client.query(
-          'UPDATE tasks SET title = $1, description = $2 WHERE updatedTitle =$3  RETURNING *',
-          [description, title,updatedTitle]
+          'UPDATE tasks SET title = $1, description = $2 WHERE updatedTaskTitle =$3  RETURNING *',
+          [description, title,updatedTaskTitle]
       );
 
       if (result.rows.length > 0) {
