@@ -279,16 +279,16 @@ app.post('/api/tasks', async (req, res) => {
 });
 
 app.put('/api/updateTask', async (req, res) => {
-  const { description, title,updatedTaskTitle } = req.body;
-  if (!description || !title || !updatedTaskTitle) {
-    return res.status(400).json({ error: 'Description, title, and updatedTaskTitle are required' });
+  const { description, title,taskId } = req.body;
+  if (!description || !title || !taskId) {
+    return res.status(400).json({ error: 'Description, title, and taskId are required' });
   }
   
 
   try {
       const result = await client.query(
           'UPDATE tasks SET title = $1, description = $2 WHERE id =$3  RETURNING *',
-          [description, title,updatedTaskTitle]
+          [description, title,taskId]
       );
 
       if (result.rows.length > 0) {
@@ -305,15 +305,15 @@ app.put('/api/updateTask', async (req, res) => {
 
 // Endpoint to delete a task by id
 app.delete('/api/deleteTask', async (req, res) => {
-  const taskTitle = req.query.title; // Retrieve taskTitle from query params
-  if (!taskTitle) {
-    return res.status(400).json({ error: 'Task title is required' });
+  const {taskId} = req.body; // Retrieve taskTitle from query params
+  if (!taskId) {
+    return res.status(400).json({ error: 'Task ID is required' });
   }
 
   try {
     const result = await client.query(
-      'DELETE FROM tasks WHERE title = $1 RETURNING *', 
-      [taskTitle]
+      'DELETE FROM tasks WHERE id = $1 RETURNING *', 
+      [taskId]
     );
 
     if (result.rowCount === 0) {
