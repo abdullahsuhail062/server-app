@@ -337,7 +337,7 @@ app.put('/api/taskCompeletion', async (req, res) => {
    // Get task ID from URL parameter
   const { completed,taskId } = req.body; // Get completion status from request body
 
-  if (typeof completed !== 'boolean') {
+  if (completed ===false) {
     return res.status(400).json({ error: 'Invalid completion status' });
   }
 
