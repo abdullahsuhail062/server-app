@@ -280,6 +280,9 @@ app.post('/api/tasks', async (req, res) => {
 
 app.put('/api/updateTask', async (req, res) => {
   const { description, title,updatedTaskTitle } = req.body;
+  if (!description || !title || !updatedTaskTitle) {
+    return res.status(400).json({ error: 'Description, title, and updatedTaskTitle are required' });
+  }
   
 
   try {
