@@ -366,6 +366,15 @@ app.put('/api/taskCompeletion', async (req, res) => {
   }
 });
 
+app.get('/api/fetchTasks', async (req, res) => {
+  try {
+    const result = await client.query('SELECT * FROM tasks');
+    res.status(200).json(result.rows);
+  } catch (error) {
+    res.status(500).json({ error: 'Database query failed' });
+  }
+});
+
 // Start the server
 const PORT = 3000;
 app.listen(PORT, () => {
