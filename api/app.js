@@ -251,7 +251,8 @@ app.delete('/api/deleteAccount', authenticateUser, async (req, res) => {
   }
 });
 
-app.post('/api/tasks', async (req, res) => {
+app.post('/api/tasks/userId:', async (req, res) => {
+  const userId =req.parrams.userId
   const { description } = req.body;
   const { title } = req.body;
   console.log(req.body);
@@ -266,8 +267,8 @@ app.post('/api/tasks', async (req, res) => {
 
   try {
       const result = await client.query(
-          'INSERT INTO tasks (title,description) VALUES ($1,$2) RETURNING *',
-          [description,title]
+          'INSERT INTO tasks (title,description,userId) VALUES ($1,$2,$3) RETURNING *',
+          [description,title,userId]
 
       );
       
