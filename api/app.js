@@ -251,11 +251,10 @@ app.delete('/api/deleteAccount', authenticateUser, async (req, res) => {
   }
 });
 
-app.post('/api/tasks/userId:', async (req, res) => {
-  const userId =req.parrams.userId
+app.post('/api/tasks', async (req, res) => {
+  const userId =req.headers['userId']
   const { description } = req.body;
   const { title } = req.body;
-  console.log(req.body);
   
   if (!title){
    return res.status(400).json({error: 'Tittle is required'})
@@ -263,6 +262,9 @@ app.post('/api/tasks/userId:', async (req, res) => {
 
   if (!description) {
       return res.status(400).json({ error: 'Description is required' });
+  }
+  if (!userId) {
+    return res.status(400).json({error: 'userId is required'})
   }
 
   try {
