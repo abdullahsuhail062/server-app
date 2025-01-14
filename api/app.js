@@ -252,9 +252,8 @@ app.delete('/api/deleteAccount', authenticateUser, async (req, res) => {
 });
 
 app.post('/api/tasks', async (req, res) => {
-  const userId =req.headers['userId']
-  const { description } = req.body;
-  const { title } = req.body;
+  const { description,title,userId } = req.body;
+  
   
   if (!title){
    return res.status(400).json({error: 'Tittle is required'})
