@@ -371,15 +371,17 @@ app.put('/api/taskCompeletion', async (req, res) => {
   }
 });
 
-app.get('/api/fetchTasks',authMiddleware, async (req, res) => {
-  const userId = req.userId
+app.get('/api/fetchTasks', authMiddleware, async (req, res) => {
+  const userId = req.userId; // Extract userId from the middleware
   try {
-    const result = await client.query('SELECT * FROM tasks WHERE userId = $3');
+    const result = await client.query('SELECT * FROM tasks WHERE userId = $1', [userId]);
     res.status(200).json(result.rows);
   } catch (error) {
+    console.error('Error fetching tasks:', error);
     res.status(500).json({ error: 'Database query failed' });
   }
 });
+
 
 // Start the server
 const PORT = 3000;
