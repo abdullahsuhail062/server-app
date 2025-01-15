@@ -250,9 +250,12 @@ app.delete('/api/deleteAccount', authenticateUser, async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
-
-app.post('/api/tasks', async (req, res) => {
-  const { description,title,userId } = req.body;
+// 
+app.post('/api/tasks',authMiddleware, async (req, res) => {
+  const { description,title } = req.body;
+  const userId =req.userId;
+  console.log(userId);
+  
   
   
   if (!title){
