@@ -1,3 +1,4 @@
+import { OpenAI } from "openai";
 import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
