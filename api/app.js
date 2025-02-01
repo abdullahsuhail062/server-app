@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 dotenv.config({ path: '.env.development.local' });
 
 import express from 'express';
-import { sql } from "@vercel/postgres";
+// import { sql } from "@vercel/postgres";
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
