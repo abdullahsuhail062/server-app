@@ -45,10 +45,8 @@ const { Client } = pkg;
 //   .then(() => console.log('Connected to the database!!!'))
 //   .catch(err => console.error('Connection error', err.stack));
 
-require('dotenv').config();
 
-const { neon } = require('@neondatabase/serverless');
-
+import { neon } from '@neondatabase/serverless';
 const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
 
 const sql = neon(`postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?sslmode=require`);
