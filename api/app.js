@@ -91,14 +91,14 @@ app.post('/api/registerUser', async (req, res) => {
   const dataBaseValidationErrors = {};
 
   try {
-    const resultUsername = await sql.query(`SELECT COUNT(*) AS user_count FROM Users WHERE username = '${username}'`);
+    const resultUsername = await sql(`SELECT COUNT(*) AS user_count FROM Users WHERE username = '${username}'`);
     const usernameExist = resultUsername.rows[0].user_count > 0;
     
     if (usernameExist) {
       dataBaseValidationErrors.usernameExist = 'Username already exists';
     }
 
-    const resultEmail = await sql.query(`SELECT COUNT(*) AS user_count FROM Users WHERE email = '${email}'`);
+    const resultEmail = await sql(`SELECT COUNT(*) AS user_count FROM Users WHERE email = '${email}'`);
     const userEmailExist = resultEmail.rows[0].user_count > 0;
 
     if (userEmailExist) {
@@ -147,7 +147,7 @@ app.post('/api/loginUser', async (req, res) => {
 
   try {
     // Check if user exists
-    const result = await sql.query('SELECT * FROM Users WHERE email = $1', [email]);
+    const result = await sql('SELECT * FROM Users WHERE email = $1', [email]);
     const user = result.rows[0];
 
     if (!user) {
@@ -215,7 +215,7 @@ app.get('/api/fetchUserProfile',authMiddleware,async (req, res)=> {
   const userId = req.userId; // Retrieve user ID from the request object or token
 
   try {
-    const result = await sql.query(
+    const result = await sql(
       'SELECT username, email FROM users WHERE id = $1',
       [userId]
     );
@@ -253,7 +253,7 @@ app.delete('/api/deleteAccount', authenticateUser, async (req, res) => {
     const userId = req.user.id; // Assuming `req.user` is populated by middleware
 
     // Delete the user from the database
-    await sql.query('DELETE FROM Users WHERE id = $1', [userId]);
+    await sql('DELETE FROM Users WHERE id = $1', [userId]);
 
     res.status(200).json({ message: 'Account deleted successfully' });
     console.log('Account deleted successfully');
@@ -283,7 +283,7 @@ app.post('/api/tasks',authMiddleware, async (req, res) => {
   }
 
   try {
-      const result = await sql.query(
+      const result = await sql(
           'INSERT INTO tasks (title,description,userId) VALUES ($1,$2,$3) RETURNING *',
           [description,title,userId]
 
@@ -306,7 +306,7 @@ app.put('/api/updateTask', async (req, res) => {
   
 
   try {
-      const result = await sql.query(
+      const result = await sql(
           'UPDATE tasks SET title = $1, description = $2 WHERE id =$3  RETURNING *',
           [description, title,taskId]
       );
@@ -325,13 +325,13 @@ app.put('/api/updateTask', async (req, res) => {
 
 // Endpoint to delete a task by id
 app.delete('/api/deleteTask', async (req, res) => {
-  const taskId = req.query.id; // Retrieve taskTitle from query params
+  const taskId = req.id; // Retrieve taskTitle from  params
   if (!taskId) {
     return res.status(400).json({ error: 'Task ID is required' });
   }
 
   try {
-    const result = await sql.query(
+    const result = await sql(
       'DELETE FROM tasks WHERE id = $1 RETURNING *', 
       [taskId]
     );
@@ -367,7 +367,7 @@ app.put('/api/taskCompeletion', async (req, res) => {
 
   try {
     // Update task completion status
-    const result = await sql.query(
+    const result = await sql(
       'UPDATE tasks SET completed = $1 WHERE id = $2 RETURNING *',
       [completed, taskId]
     );
@@ -387,11 +387,11 @@ app.put('/api/taskCompeletion', async (req, res) => {
 app.get('/api/fetchTasks', authMiddleware, async (req, res) => {
   const userId = req.userId; // Extract userId from the middleware
   try {
-    const result = await sql.query('SELECT * FROM tasks WHERE userId = $1', [userId]);
+    const result = await sql('SELECT * FROM tasks WHERE userId = $1', [userId]);
     res.status(200).json(result.rows);
   } catch (error) {
     console.error('Error fetching tasks:', error);
-    res.status(500).json({ error: 'Database query failed' });
+    res.status(500).json({ error: 'Database  failed' });
   }
 });
 
