@@ -52,8 +52,15 @@ const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
 const sql = neon(process.env.DATABASE_URL);
 
 async function getPgVersion() {
- 
+  try {
+    const result = await sql`SELECT version();`;
+    console.log("PostgreSQL Version:", result[0].version);
+  } catch (error) {
+    console.error("Error fetching PostgreSQL version:", error);
+  }
 }
+ 
+
 
 getPgVersion();
 
