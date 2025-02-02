@@ -49,7 +49,7 @@ const { Client } = pkg;
 import { neon } from '@neondatabase/serverless';
 const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
 
-const sql = neon(`postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?sslmode=require`);
+const sql = neon(process.env.DATABASE_URL);
 
 async function getPgVersion() {
  
