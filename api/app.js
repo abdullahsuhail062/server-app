@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 dotenv.config({ path: '.env.development.local' });
+import postgres from 'postgres'
 
 import express from 'express';
 // import { sql } from "@vercel/postgres";
@@ -49,7 +50,8 @@ const { Client } = pkg;
 import { neon } from '@neondatabase/serverless';
 const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
 
-const sql = neon(process.env.DATABASE_URL);
+//const sql = neon(process.env.DATABASE_URL);
+const sql = neon(`postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?sslmode=require`);
 
 async function getPgVersion() {
   try {
