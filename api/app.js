@@ -100,14 +100,14 @@ app.post('/api/registerUser', async (req, res) => {
   const dataBaseValidationErrors = {};
 
   try {
-    const resultUsername = await sql(`SELECT COUNT(*) AS user_count FROM public.users WHERE username = '${username}'`);
+    const resultUsername = await sql(`SELECT COUNT(*) AS user_count FROM users WHERE username = '${username}'`);
     const usernameExist = resultUsername.rows[0].user_count > 0;
     
     if (usernameExist) {
       dataBaseValidationErrors.usernameExist = 'Username already exists';
     }
 
-    const resultEmail = await sql(`SELECT COUNT(*) AS user_count FROM public.users WHERE email = '${email}'`);
+    const resultEmail = await sql(`SELECT COUNT(*) AS user_count FROM users WHERE email = '${email}'`);
     const userEmailExist = resultEmail.rows[0].user_count > 0;
 
     if (userEmailExist) {
@@ -120,7 +120,7 @@ app.post('/api/registerUser', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const insertResult = await sql`
-      INSERT INTO public.users (username, email, password)
+      INSERT INTO users (username, email, password)
       VALUES (${username}, ${email}, ${hashedPassword})
       RETURNING id, username, email`;
       
@@ -156,7 +156,7 @@ app.post('/api/loginUser', async (req, res) => {
 
   try {
     // Check if user exists
-    const result = await sql('SELECT * FROM public.users WHERE email = $1', [email]);
+    const result = await sql('SELECT * FROM users WHERE email = $1', [email]);
     const user = result.rows[0];
 
     if (!user) {
@@ -225,7 +225,7 @@ app.get('/api/fetchUserProfile',authMiddleware,async (req, res)=> {
 
   try {
     const result = await sql(
-      'SELECT username, email FROM public.users WHERE id = $1',
+      'SELECT username, email FROM users WHERE id = $1',
       [userId]
     );
 
@@ -262,7 +262,7 @@ app.delete('/api/deleteAccount', authenticateUser, async (req, res) => {
     const userId = req.user.id; // Assuming `req.user` is populated by middleware
 
     // Delete the user from the database
-    await sql('DELETE FROM public.users WHERE id = $1', [userId]);
+    await sql('DELETE FROM users WHERE id = $1', [userId]);
 
     res.status(200).json({ message: 'Account deleted successfully' });
     console.log('Account deleted successfully');
