@@ -77,6 +77,8 @@ app.post('/api/registerUser', async (req, res) => {
 
   const errors = {};  
   const { username, email, password } = req.body;
+  console.log(req.body);
+  
 
 
   if (!username || username.length < 3) {
