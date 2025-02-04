@@ -187,7 +187,7 @@ app.post('/api/registerUser', async (req, res) => {
     // 🛠️ **Debugging: Check if the SQL queries return the expected results**
     const resultUsername = await sql`SELECT COUNT(*) AS user_count FROM users WHERE username = ${username}`;
     console.log('Username Query Result:', resultUsername); // ✅ Log result
-    const usernameExist = resultUsername.rows.user_count > 0
+    const usernameExist = resultUsername.rows.length > 0
     if (usernameExist) {
      
         dataBaseValidationErrors.usernameExist = 'Username already exists';
@@ -199,7 +199,7 @@ app.post('/api/registerUser', async (req, res) => {
     const resultEmail = await sql`SELECT COUNT(*) AS user_count FROM users WHERE email = ${email}`;
     console.log('Email Query Result:', resultEmail); // ✅ Log result
 
-     const userEmailExist = resultUsername.rows.user_count > 0;
+     const userEmailExist = resultUsername.rows.length > 0;
 if (userEmailExist) {
   dataBaseValidationErrors.userEmailExist = 'Email already exists';
 } else {
