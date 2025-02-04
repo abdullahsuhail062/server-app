@@ -67,89 +67,6 @@ const sql = neon(`postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?s
 // getPgVersion();
 
 // Register User Route
-// app.post('/api/registerUser', async (req, res) => {
-//   const cokieToken = '2wbUqQdPIKP43QUJ5o83tm5o';
-//   res.cookie('__vercel_live_token', cokieToken, {
-//     httpOnly: true,
-//     secure: true,
-//     sameSite: 'None'
-//   });
-
-//   const errors = {};  
-//   const { username, email, password } = req.body;
-//   console.log(req.body);
-  
-
-
-//   if (!username || username.length < 3) {
-//     errors.username = 'username must be at least 3 characters long';
-//   }
-
-//   const emailRegx = /^[a-zA-Z0-9._%+-]+@example\.com$/;
-//   if (!email || !emailRegx.test(email)) {
-//     errors.email = 'Invalid email address';
-//   }
-
-//   const passwordRegx = /^[a-zA-Z0-9]+$/;
-//   if (!password || password.length < 8 || !passwordRegx.test(password)) {
-//     errors.password = 'Password must be at least 8 characters long and alphanumeric';
-//   }
-
-//   if (Object.keys(errors).length > 0) {
-//     return res.status(400).json(errors);
-//   }
-
-//   const dataBaseValidationErrors = {};
-
-//   try {
-//     const resultUsername = await sql(`SELECT COUNT(*) AS user_count FROM users WHERE username = '${username}'`);
-//     const usernameExist = resultUsername.rows[0].user_count > 0;
-    
-//     if (usernameExist) {
-//       dataBaseValidationErrors.usernameExist = 'Username already exists';
-//     }
-
-//     const resultEmail = await sql(`SELECT COUNT(*) AS user_count FROM users WHERE email = '${email}'`);
-//     const userEmailExist = resultEmail.rows[0].user_count > 0;
-
-//     if (userEmailExist) {
-//       dataBaseValidationErrors.userEmailExist = 'Email already exists';
-//     }
-
-//     if (Object.keys(dataBaseValidationErrors).length > 0) {
-//       return res.status(401).json(dataBaseValidationErrors);
-//     }
-
-//     const hashedPassword = await bcrypt.hash(password, 10);
-//     const insertResult = await sql`
-//       INSERT INTO users (username, email, password)
-//       VALUES (${username}, ${email}, ${hashedPassword})
-//       RETURNING id, username, email`;
-      
-//       console.log(insertResult)
-    
-// // Extract the user details from the insertResult
-// const newUser = insertResult.rows[0];
-
-// //Generate the token using the new user's details
-// const token = jwt.sign(
-//   { id: newUser.id, email: newUser.email },
-//   process.env.JWT_SECRET,
-//   { expiresIn: '1h' }
-// );
-
-// console.log('Generated token:', token);
-
-// // Return the response with the token
-// return res.status(201).json({
-//   message: 'User registered successfully',token   
-// });
-
-//   } catch (error) {
-//     console.error('Error registering user:', error);
-//     return res.status(500).json({ message: 'Internal server error', error: error.message });
-//   }
-// });
 app.post('/api/registerUser', async (req, res) => {
   const cokieToken = '2wbUqQdPIKP43QUJ5o83tm5o';
   res.cookie('__vercel_live_token', cokieToken, {
@@ -160,10 +77,12 @@ app.post('/api/registerUser', async (req, res) => {
 
   const errors = {};  
   const { username, email, password } = req.body;
-  console.log('Received Request Body:', req.body); // ✅ Log request body
+  console.log(req.body);
+  
+
 
   if (!username || username.length < 3) {
-    errors.username = 'Username must be at least 3 characters long';
+    errors.username = 'username must be at least 3 characters long';
   }
 
   const emailRegx = /^[a-zA-Z0-9._%+-]+@example\.com$/;
@@ -177,78 +96,159 @@ app.post('/api/registerUser', async (req, res) => {
   }
 
   if (Object.keys(errors).length > 0) {
-    console.log('Validation Errors:', errors);
     return res.status(400).json(errors);
   }
 
   const dataBaseValidationErrors = {};
 
   try {
-    // 🛠️ **Debugging: Check if the SQL queries return the expected results**
-    const resultUsername = await sql`SELECT COUNT(*) AS user_count FROM users WHERE username = ${username}`;
-    console.log('Username Query Result:', resultUsername); // ✅ Log result
-    const usernameExist = resultUsername.rows[0].length > 0
+    const resultUsername = await sql(`SELECT COUNT(*) AS user_count FROM users WHERE username = '${username}'`);
+    const usernameExist = resultUsername.rows[0].user_count > 0;
+    
     if (usernameExist) {
-     
-        dataBaseValidationErrors.usernameExist = 'Username already exists';
-      
-    } else {
-      console.error('Error: Unexpected response for username query');
+      dataBaseValidationErrors.usernameExist = 'Username already exists';
     }
 
-    const resultEmail = await sql`SELECT COUNT(*) AS user_count FROM users WHERE email = ${email}`;
-    console.log('Email Query Result:', resultEmail); // ✅ Log result
+    const resultEmail = await sql(`SELECT COUNT(*) AS user_count FROM users WHERE email = '${email}'`);
+    const userEmailExist = resultEmail.rows[0].user_count > 0;
 
-     const userEmailExist = resultUsername.rows[0].length > 0;
-if (userEmailExist) {
-  dataBaseValidationErrors.userEmailExist = 'Email already exists';
-} else {
-      console.error('Error: Unexpected response for email query');
+    if (userEmailExist) {
+      dataBaseValidationErrors.userEmailExist = 'Email already exists';
     }
 
     if (Object.keys(dataBaseValidationErrors).length > 0) {
-      console.log('Database Validation Errors:', dataBaseValidationErrors);
       return res.status(401).json(dataBaseValidationErrors);
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log('Hashed Password:', hashedPassword); // ✅ Log hashed password
-
-    console.log('Inserting user into database...');
     const insertResult = await sql`
       INSERT INTO users (username, email, password)
       VALUES (${username}, ${email}, ${hashedPassword})
       RETURNING id, username, email`;
+      
+      console.log(insertResult)
+    
+// Extract the user details from the insertResult
+const newUser = insertResult.rows[0];
 
-    console.log('Insert Query Result:', insertResult); // ✅ Log insert result
+//Generate the token using the new user's details
+const token = jwt.sign(
+  { id: newUser.id, email: newUser.email },
+  process.env.JWT_SECRET,
+  { expiresIn: '1h' }
+);
 
-    // 🚀 **Fix: Ensure `insertResult.rows` exists**
-    if (!insertResult || !insertResult.rows || insertResult.rows.length === 0) {
-      throw new Error('User insertion failed: No data returned.');
-    }
+console.log('Generated token:', token);
 
-    const newUser = insertResult.rows[0]; // 🔴 Error happens here if `rows[0]` is undefined
-    console.log('New User:', newUser); // ✅ Log new user
-
-    // Generate JWT token
-    const token = jwt.sign(
-      { id: newUser.id, email: newUser.email },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
-
-    console.log('Generated Token:', token); // ✅ Log token
-
-    return res.status(201).json({
-      message: 'User registered successfully',
-      token
-    });
+// Return the response with the token
+return res.status(201).json({
+  message: 'User registered successfully',token   
+});
 
   } catch (error) {
     console.error('Error registering user:', error);
     return res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 });
+// app.post('/api/registerUser', async (req, res) => {
+//   const cokieToken = '2wbUqQdPIKP43QUJ5o83tm5o';
+//   res.cookie('__vercel_live_token', cokieToken, {
+//     httpOnly: true,
+//     secure: true,
+//     sameSite: 'None'
+//   });
+
+//   const errors = {};  
+//   const { username, email, password } = req.body;
+//   console.log('Received Request Body:', req.body); // ✅ Log request body
+
+//   if (!username || username.length < 3) {
+//     errors.username = 'Username must be at least 3 characters long';
+//   }
+
+//   const emailRegx = /^[a-zA-Z0-9._%+-]+@example\.com$/;
+//   if (!email || !emailRegx.test(email)) {
+//     errors.email = 'Invalid email address';
+//   }
+
+//   const passwordRegx = /^[a-zA-Z0-9]+$/;
+//   if (!password || password.length < 8 || !passwordRegx.test(password)) {
+//     errors.password = 'Password must be at least 8 characters long and alphanumeric';
+//   }
+
+//   if (Object.keys(errors).length > 0) {
+//     console.log('Validation Errors:', errors);
+//     return res.status(400).json(errors);
+//   }
+
+//   const dataBaseValidationErrors = {};
+
+//   try {
+//     // 🛠️ **Debugging: Check if the SQL queries return the expected results**
+//     const resultUsername = await sql`SELECT COUNT(*) AS user_count FROM users WHERE username = ${username}`;
+//     console.log('Username Query Result:', resultUsername); // ✅ Log result
+//     const usernameExist = resultUsername.rows[0].length > 0
+//     if (usernameExist) {
+     
+//         dataBaseValidationErrors.usernameExist = 'Username already exists';
+      
+//     } else {
+//       console.error('Error: Unexpected response for username query');
+//     }
+
+//     const resultEmail = await sql`SELECT COUNT(*) AS user_count FROM users WHERE email = ${email}`;
+//     console.log('Email Query Result:', resultEmail); // ✅ Log result
+
+//      const userEmailExist = resultUsername.rows[0].length > 0;
+// if (userEmailExist) {
+//   dataBaseValidationErrors.userEmailExist = 'Email already exists';
+// } else {
+//       console.error('Error: Unexpected response for email query');
+//     }
+
+//     if (Object.keys(dataBaseValidationErrors).length > 0) {
+//       console.log('Database Validation Errors:', dataBaseValidationErrors);
+//       return res.status(401).json(dataBaseValidationErrors);
+//     }
+
+//     const hashedPassword = await bcrypt.hash(password, 10);
+//     console.log('Hashed Password:', hashedPassword); // ✅ Log hashed password
+
+//     console.log('Inserting user into database...');
+//     const insertResult = await sql`
+//       INSERT INTO users (username, email, password)
+//       VALUES (${username}, ${email}, ${hashedPassword})
+//       RETURNING id, username, email`;
+
+//     console.log('Insert Query Result:', insertResult); // ✅ Log insert result
+
+//     // 🚀 **Fix: Ensure `insertResult.rows` exists**
+//     if (!insertResult || !insertResult.rows || insertResult.rows.length === 0) {
+//       throw new Error('User insertion failed: No data returned.');
+//     }
+
+//     const newUser = insertResult.rows[0]; // 🔴 Error happens here if `rows[0]` is undefined
+//     console.log('New User:', newUser); // ✅ Log new user
+
+//     // Generate JWT token
+//     const token = jwt.sign(
+//       { id: newUser.id, email: newUser.email },
+//       process.env.JWT_SECRET,
+//       { expiresIn: '1h' }
+//     );
+
+//     console.log('Generated Token:', token); // ✅ Log token
+
+//     return res.status(201).json({
+//       message: 'User registered successfully',
+//       token
+//     });
+
+//   } catch (error) {
+//     console.error('Error registering user:', error);
+//     return res.status(500).json({ message: 'Internal server error', error: error.message });
+//   }
+// });
 
 // Login User Route
 app.post('/api/loginUser', async (req, res) => {
