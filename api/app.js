@@ -199,7 +199,7 @@ app.post('/api/registerUser', async (req, res) => {
     const resultEmail = await sql`SELECT COUNT(*) AS user_count FROM users WHERE email = ${email}`;
     console.log('Email Query Result:', resultEmail); // ✅ Log result
 
-    if (resultEmail.rows && resultEmail.rows.length > 0) {
+    if (resultEmail.rows && resultEmail.rows[0].length > 0) {
      
         dataBaseValidationErrors.userEmailExist = 'Email already exists';
       
