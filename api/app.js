@@ -187,8 +187,8 @@ app.post('/api/registerUser', async (req, res) => {
     // 🛠️ **Debugging: Check if the SQL queries return the expected results**
     const resultUsername = await sql`SELECT COUNT(*) AS user_count FROM users WHERE username = ${username}`;
     console.log('Username Query Result:', resultUsername); // ✅ Log result
-
-    if (resultUsername.rows[1] && resultUsername.rows[1].length > 0) {
+    const usernameExist = resultUsername.rows[0].user_count > 0
+    if (usernameExist) {
      
         dataBaseValidationErrors.usernameExist = 'Username already exists';
       
@@ -199,11 +199,10 @@ app.post('/api/registerUser', async (req, res) => {
     const resultEmail = await sql`SELECT COUNT(*) AS user_count FROM users WHERE email = ${email}`;
     console.log('Email Query Result:', resultEmail); // ✅ Log result
 
-    if (resultEmail.rows[1] && resultEmail.rows[1].length > 0) {
-     
-        dataBaseValidationErrors.userEmailExist = 'Email already exists';
-      
-    } else {
+     const userEmailExist = resultUsername.rows[0].user_count > 0;
+if (userEmailExist) {
+  dataBaseValidationErrors.userEmailExist = 'Email already exists';
+} else {
       console.error('Error: Unexpected response for email query');
     }
 
