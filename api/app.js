@@ -186,26 +186,26 @@ app.post('/api/registerUser', async (req, res) => {
     const resultUsername = await sql(`SELECT COUNT(*) AS user_count FROM users WHERE username = '${username}'`);
     console.log('Username check result:', resultUsername.rows); // Log the result
 
-    if (resultUsername.rows && resultUsername.rows.length > 0) {
-      const usernameExist = resultUsername.rows[0].user_count > 0;
-      if (usernameExist) {
-        dataBaseValidationErrors.usernameExist = 'Username already exists';
-      }
-    } else {
-      dataBaseValidationErrors.usernameExist = 'Error checking username availability';
-    }
+    // if (resultUsername.rows && resultUsername.rows.length > 0) {
+    //   const usernameExist = resultUsername.rows[0].user_count > 0;
+    //   if (usernameExist) {
+    //     dataBaseValidationErrors.usernameExist = 'Username already exists';
+    //   }
+    // } else {
+    //   dataBaseValidationErrors.usernameExist = 'Error checking username availability';
+    // }
 
     const resultEmail = await sql(`SELECT COUNT(*) AS user_count FROM users WHERE email = '${email}'`);
     console.log('Email check result:', resultEmail.rows); // Log the result
 
-    if (resultEmail.rows && resultEmail.rows.length > 0) {
-      const userEmailExist = resultEmail.rows[0].user_count > 0;
-      if (userEmailExist) {
-        dataBaseValidationErrors.userEmailExist = 'Email already exists';
-      }
-    } else {
-      dataBaseValidationErrors.userEmailExist = 'Error checking email availability';
-    }
+    // if (resultEmail.rows && resultEmail.rows.length > 0) {
+    //   const userEmailExist = resultEmail.rows[0].user_count > 0;
+    //   if (userEmailExist) {
+    //     dataBaseValidationErrors.userEmailExist = 'Email already exists';
+    //   }
+    // } else {
+    //   dataBaseValidationErrors.userEmailExist = 'Error checking email availability';
+    // }
 
     if (Object.keys(dataBaseValidationErrors).length > 0) {
       return res.status(401).json(dataBaseValidationErrors);
