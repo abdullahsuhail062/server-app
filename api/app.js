@@ -258,7 +258,7 @@ app.post('/api/loginUser', async (req, res) => {
   try {
     // Check if user exists
     const result = await sql('SELECT * FROM users WHERE email = $1', [email]);
-    const user = result.rows[0];
+    const user = result.rows;
 
     if (!user) {
       errors.email = 'Invalid email or password' 
