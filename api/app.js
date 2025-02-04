@@ -110,6 +110,9 @@ app.post('/api/registerUser', async (req, res) => {
     }
 
     const resultEmail = await sql(`SELECT COUNT(*) AS user_count FROM users WHERE email = '${email}'`);
+    console.log('Email Query Result (Full Response):', resultEmail);
+console.log('Rows:', resultEmail.rows); // Check if 'rows' is defined
+console.log('Rows[0]:', resultEmail.rows?.[0]); // Check if 'rows[0]' exists
     const userEmailExist = resultEmail.rows[0].user_count > 0;
 
     if (userEmailExist) {
