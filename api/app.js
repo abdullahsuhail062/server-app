@@ -103,7 +103,7 @@ app.post('/api/registerUser', async (req, res) => {
 
   try {
     const resultUsername = await sql('SELECT COUNT(*) AS user_count FROM users WHERE username = $1',[username]);
-    const usernameExist = resultUsername.rows.user_count > 0;
+    const usernameExist = resultUsername.rows[0].user_count > 0;
     
     if (usernameExist) {
       dataBaseValidationErrors.usernameExist = 'Username already exists';
@@ -113,7 +113,7 @@ app.post('/api/registerUser', async (req, res) => {
     console.log('Email Query Result (Full Response):', resultEmail);
 console.log('Rows:', resultEmail.rows); // Check if 'rows' is defined
 console.log('Rows[0]:', resultEmail.rows?.[0]); // Check if 'rows[0]' exists
-    const userEmailExist = resultEmail.rows.user_count > 0;
+    const userEmailExist = resultEmail.rows[0].user_count > 0;
 
     if (userEmailExist) {
       dataBaseValidationErrors.userEmailExist = 'Email already exists';
@@ -125,10 +125,11 @@ console.log('Rows[0]:', resultEmail.rows?.[0]); // Check if 'rows[0]' exists
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const insertResult = await sql`
-      INSERT INTO users (username, email, password)
-      VALUES (${username}, ${email}, ${hashedPassword})
-      RETURNING id, username, email`;
-      
+  INSERT INTO users (username, email, password)
+  VALUES (${username}, ${email}, ${hashedPassword})
+  RETURNING id, username, email;
+`;
+
       console.log(insertResult)
     
 // Extract the user details from the insertResult
