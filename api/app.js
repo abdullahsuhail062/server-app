@@ -189,10 +189,9 @@ app.post('/api/registerUser', async (req, res) => {
     console.log('Username Query Result:', resultUsername); // ✅ Log result
 
     if (resultUsername.rows && resultUsername.rows.length > 0) {
-      const usernameExist = resultUsername.rows.user_count > 0;
-      if (usernameExist) {
+     
         dataBaseValidationErrors.usernameExist = 'Username already exists';
-      }
+      
     } else {
       console.error('Error: Unexpected response for username query');
     }
@@ -201,10 +200,9 @@ app.post('/api/registerUser', async (req, res) => {
     console.log('Email Query Result:', resultEmail); // ✅ Log result
 
     if (resultEmail.rows && resultEmail.rows.length > 0) {
-      const userEmailExist = resultEmail.rows.user_count > 0;
-      if (userEmailExist) {
+     
         dataBaseValidationErrors.userEmailExist = 'Email already exists';
-      }
+      
     } else {
       console.error('Error: Unexpected response for email query');
     }
