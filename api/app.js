@@ -107,14 +107,14 @@ app.post('/api/registerUser', async (req, res) => {
     
     if (usernameExist) {
       dataBaseValidationErrors.usernameExist = 'Username already exists';
-    }
+    }else{ console.log('Email Query Result (Full Response):', resultEmail);
+      console.log('Rows:', resultEmail.rows); // Check if 'rows' is defined
+      console.log('Rows[0]:', resultEmail.rows?.[0]); // Check if 'rows[0]' exists
+          const userEmailExist = resultEmail.rows[0].user_count > 0;
+      }
 
     const resultEmail = await sql(`SELECT * FROM users WHERE email = ${email}`);
-    console.log('Email Query Result (Full Response):', resultEmail);
-console.log('Rows:', resultEmail.rows); // Check if 'rows' is defined
-console.log('Rows[0]:', resultEmail.rows?.[0]); // Check if 'rows[0]' exists
-    const userEmailExist = resultEmail.rows[0].user_count > 0;
-
+   
     if (userEmailExist) {
       dataBaseValidationErrors.userEmailExist = 'Email already exists';
     }
