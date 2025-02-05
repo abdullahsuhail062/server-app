@@ -102,7 +102,7 @@ app.post('/api/registerUser', async (req, res) => {
   const dataBaseValidationErrors = {};
 
   try {
-    const resultUsername = await sql(`SELECT * FROM users WHERE username = ${username}`);
+    const resultUsername = await sql(`SELECT * FROM users WHERE id = ${id}`);
     const usernameExist = resultUsername.rows[0].user_count > 0;
     
     if (usernameExist) {
