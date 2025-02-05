@@ -102,7 +102,7 @@ app.post('/api/registerUser', async (req, res) => {
   const dataBaseValidationErrors = {};
 
   try {
-    const resultUsername = await sql(`SELECT * FROM users WHERE id = ${id}`);
+    const resultUsername = await sql(`SELECT * FROM users WHERE username = ${username}`);
     const usernameExist = resultUsername.rows[0].user_count > 0;
     
     if (usernameExist) {
@@ -262,7 +262,7 @@ app.post('/api/loginUser', async (req, res) => {
   try {
     // Check if user exists
     const result = await sql('SELECT * FROM users WHERE email = $1', [email]);
-    const user = result.rows;
+    const user = result.rows[0];
 
     if (!user) {
       errors.email = 'Invalid email or password' 
