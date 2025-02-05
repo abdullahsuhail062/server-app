@@ -261,7 +261,7 @@ app.post('/api/loginUser', async (req, res) => {
 
   try {
     // Check if user exists
-    const result = await sql('SELECT * FROM users WHERE email = $1', [email]);
+    const result = await sql(`SELECT * FROM users WHERE email = ${email}`);
     const user = result.rows[0];
 
     if (!user) {
