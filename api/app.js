@@ -52,6 +52,9 @@ const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
 
 //const sql = neon(process.env.DATABASE_URL);
 const sql = neon(`postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?sslmode=require`);
+const checkConnection = sql`SELECT NOW()`
+console.log('database connection', checkConnection)
+
 
 // async function getPgVersion() {
 //   try {
