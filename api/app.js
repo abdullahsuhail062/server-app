@@ -102,21 +102,21 @@ app.post('/api/registerUser', async (req, res) => {
   const dataBaseValidationErrors = {};
 
   try {
-    const resultUsername = await sql`(SELECT * FROM users WHERE username = ${username})`;
-    const usernameExist = resultUsername.rows[0].user_count > 0;
+    // const resultUsername = await sql`(SELECT * FROM users WHERE username = ${username})`;
+    // const usernameExist = resultUsername.rows[0].user_count > 0;
     
-    if (usernameExist) {
-      dataBaseValidationErrors.usernameExist = 'Username already exists';
-    }else{ console.log('Email Query Result (Full Response):', resultEmail);
-      console.log('Rows:', resultEmail.rows); // Check if 'rows' is defined
-      console.log('Rows[0]:', resultEmail.rows?.[0]); // Check if 'rows[0]' exists
-      }
+    // if (usernameExist) {
+    //   dataBaseValidationErrors.usernameExist = 'Username already exists';
+    // }else{ console.log('Email Query Result (Full Response):', resultEmail);
+    //   console.log('Rows:', resultEmail.rows); // Check if 'rows' is defined
+    //   console.log('Rows[0]:', resultEmail.rows?.[0]); // Check if 'rows[0]' exists
+    //   }
 
-    const resultEmail = await sql`('SELECT * FROM users WHERE email = ${email})`;
+    // const resultEmail = await sql`('SELECT * FROM users WHERE email = ${email})`;
    
-    if (userEmailExist) {
-      dataBaseValidationErrors.userEmailExist = 'Email already exists';
-    }
+    // if (userEmailExist) {
+    //   dataBaseValidationErrors.userEmailExist = 'Email already exists';
+    // }
 
     if (Object.keys(dataBaseValidationErrors).length > 0) {
       return res.status(401).json(dataBaseValidationErrors);
