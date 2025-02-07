@@ -53,7 +53,7 @@ const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
 //const sql = neon(process.env.DATABASE_URL);
 const sql = neon(`postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?sslmode=require`);
 const checkConnection = sql`SELECT NOW()`
-console.log('database connection', checkConnection.rows[0].now)
+console.log('database connection', checkConnection)
 
 
 // async function getPgVersion() {
@@ -127,7 +127,7 @@ app.post('/api/registerUser', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const insertResult = await sql`
-  INSERT INTO users (username, email, password) VALUES (username, email, hashedPassword) RETURNING id, username, email
+  INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id, username, email
 `;
 
       console.log(insertResult)
