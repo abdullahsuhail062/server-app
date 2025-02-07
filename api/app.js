@@ -124,7 +124,7 @@ app.post('/api/registerUser', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const insertResult = await sql`
-  INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id, username, email
+  INSERT INTO users (username, email, password) VALUES ($1,[username], $2,[email], $3,[hashedPassword]) RETURNING id, username, email
 `;
 
       console.log(insertResult)
