@@ -102,7 +102,7 @@ app.post('/api/registerUser', async (req, res) => {
   const dataBaseValidationErrors = {};
 
   try {
-    const resultUsername = await sql('SELECT username FROM users' );
+    const resultUsername = await sql('SELECT * FROM users WHERE username = $1' );
     const usernameExist = resultUsername.rows[0].user_count > 0;
     
     if (usernameExist) {
@@ -112,7 +112,7 @@ app.post('/api/registerUser', async (req, res) => {
       console.log('Rows[0]:', resultEmail.rows?.[0]); // Check if 'rows[0]' exists
       }
 
-    const resultEmail = await sql(`SELECT * FROM users WHERE email = ${email}`);
+    const resultEmail = await sql('SELECT * FROM users WHERE email = $2');
    
     if (userEmailExist) {
       dataBaseValidationErrors.userEmailExist = 'Email already exists';
@@ -124,9 +124,7 @@ app.post('/api/registerUser', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const insertResult = await sql`
-  INSERT INTO users (username, email, password)
-  VALUES (${username}, ${email}, ${hashedPassword})
-  RETURNING id, username, email;
+  INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id, username, email
 `;
 
       console.log(insertResult)
