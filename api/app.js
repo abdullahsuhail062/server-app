@@ -251,6 +251,40 @@ app.post('/api/registerUser', async (req, res) => {
     return res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 });
+app.post('/api/loginUser', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const errors = {};
+
+    // Find user by email
+    const result = await sql`SELECT * FROM users WHERE email = ${email}`;
+    const user = result[0];  // ✅ Corrected
+
+    // If no user found, return error
+    if (!user) {
+      return res.status(400).json({ email: 'Invalid email or password' });
+    }
+
+    // Verify password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(400).json({ password: 'Invalid email or password' });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: user.id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    return res.json({ message: 'Login successful', token });
+
+  } catch (error) {
+    console.error('Error logging in:', error);
+    return res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+});
 
 const authMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization;
