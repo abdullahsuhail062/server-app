@@ -228,25 +228,24 @@ app.post('/api/registerUser', async (req, res) => {
       VALUES (${username}, ${email}, ${hashedPassword}) 
       RETURNING id, username, email`;
 
-    // Extract the inserted user details
-    const newUser = insertResult[0];  // ✅ Corrected
+      const newUser = insertResult.rows[0];  // ✅ Correct way to access the inserted user
 
-    // Generate JWT token
-    const token = jwt.sign(
-      { id: newUser.id, email: newUser.email },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
-
-    console.log('Generated token:', token);
-
-    // Return response
-    return res.status(201).json({
-      message: 'User registered successfully',
-      token,
-    });
-
-  } catch (error) {
+      // Generate JWT token
+      const token = jwt.sign(
+        { id: newUser.id, email: newUser.email },
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' }
+      );
+      
+      console.log('Generated token:', token);
+      
+      // Return response
+      return res.status(201).json({
+        message: 'User registered successfully',
+        token,
+      });
+      
+      } catch (error) {
     console.error('Error registering user:', error);
     return res.status(500).json({ message: 'Internal server error', error: error.message });
   }
