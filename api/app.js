@@ -125,7 +125,7 @@ app.post('/api/registerUser', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const insertResult = await sql`
-  INSERT INTO users (column1, column2, column3) VALUES (${username}, ${email}, ${hashedPassword}) RETURNING *
+  INSERT INTO users (column1, column2, column3) VALUES (username, email, hashedPassword) RETURNING *
 `;
 
       console.log(insertResult)
@@ -161,10 +161,7 @@ app.post('/api/loginUser', async (req, res) => {
     // Check if user exists
     const result = await sql('SELECT email FROM users');
     const user = result.rows[0];
-    console.log('Email Query Result (Full Response):', resultEmail);
-      console.log('Rows:', resultEmail.rows); // Check if 'rows' is defined
-      console.log('Rows[0]:', resultEmail.rows?.[0]); // Check if 'rows[0]' exists
-
+   
     if (!user) {
       errors.email = 'Invalid email or password' 
       console.log(errors.email)
