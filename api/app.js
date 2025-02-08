@@ -106,18 +106,18 @@ app.post('/api/registerUser', async (req, res) => {
 
   try {
     const resultUsername = await sql`(SELECT username FROM users)`;
-    //const usernameExist = resultUsername.rows[0].length > 0;
+    const usernameExist = resultUsername.rows[0].length > 0;
     
-    // if (resultUsername.length >0) {
-    //   dataBaseValidationErrors.usernameExist = 'Username already exists';
-    //   }
+    if (resultUsername.length >0) {
+      dataBaseValidationErrors.usernameExist = 'Username already exists';
+      }
 
-    // const resultEmail = await sql`(SELECT email FROM users)`;
-    // //const userEmailExist = resultEmail.rows[0].length> 0;
+    const resultEmail = await sql`(SELECT email FROM users)`;
+    //const userEmailExist = resultEmail.rows[0].length> 0;
    
-    // if (resultEmail.length > 0) {
-    //   dataBaseValidationErrors.userEmailExist = 'Email already exists';
-    // }
+    if (resultEmail.length > 0) {
+      dataBaseValidationErrors.userEmailExist = 'Email already exists';
+    }
 
     if (Object.keys(dataBaseValidationErrors).length > 0) {
       return res.status(401).json(dataBaseValidationErrors);
@@ -125,7 +125,7 @@ app.post('/api/registerUser', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const insertResult = await sql`
-  INSERT INTO users (username, email, password) VALUES (${username}, ${email}, ${hashedPassword}) RETURNING id, username, email
+  INSERT INTO users (column1, column2, column3) VALUES (${username}, ${email}, ${hashedPassword}) RETURNING *
 `;
 
       console.log(insertResult)
