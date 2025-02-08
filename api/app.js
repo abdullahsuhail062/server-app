@@ -70,82 +70,181 @@ console.log('database connection', checkConnection)
 // getPgVersion();
 
 // Register User Route
-app.post('/api/registerUser', async (req, res) => {
-  const cokieToken = '2wbUqQdPIKP43QUJ5o83tm5o';
-  res.cookie('__vercel_live_token', cokieToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'None'
-  });
+// app.post('/api/registerUser', async (req, res) => {
+//   const cokieToken = '2wbUqQdPIKP43QUJ5o83tm5o';
+//   res.cookie('__vercel_live_token', cokieToken, {
+//     httpOnly: true,
+//     secure: true,
+//     sameSite: 'None'
+//   });
 
-  const errors = {};  
-  const { username, email, password } = req.body;
-  console.log(req.body);
+//   const errors = {};  
+//   const { username, email, password } = req.body;
+//   console.log(req.body);
   
 
 
-  if (!username || username.length < 3) {
-    errors.username = 'username must be at least 3 characters long';
-  }
+//   if (!username || username.length < 3) {
+//     errors.username = 'username must be at least 3 characters long';
+//   }
 
-  const emailRegx = /^[a-zA-Z0-9._%+-]+@example\.com$/;
-  if (!email || !emailRegx.test(email)) {
-    errors.email = 'Invalid email address';
-  }
+//   const emailRegx = /^[a-zA-Z0-9._%+-]+@example\.com$/;
+//   if (!email || !emailRegx.test(email)) {
+//     errors.email = 'Invalid email address';
+//   }
 
-  const passwordRegx = /^[a-zA-Z0-9]+$/;
-  if (!password || password.length < 8 || !passwordRegx.test(password)) {
-    errors.password = 'Password must be at least 8 characters long and alphanumeric';
-  }
+//   const passwordRegx = /^[a-zA-Z0-9]+$/;
+//   if (!password || password.length < 8 || !passwordRegx.test(password)) {
+//     errors.password = 'Password must be at least 8 characters long and alphanumeric';
+//   }
 
-  if (Object.keys(errors).length > 0) {
-    return res.status(400).json(errors);
-  }
+//   if (Object.keys(errors).length > 0) {
+//     return res.status(400).json(errors);
+//   }
 
-  const dataBaseValidationErrors = {};
+//   const dataBaseValidationErrors = {};
 
-  try {
-    // const resultUsername = await sql`(SELECT username FROM users)`;
-    // const usernameExist = resultUsername.rows[0].length > 0;
+//   try {
+//     const resultUsername = await sql`(SELECT username FROM users)`;
+//     const usernameExist = resultUsername.rows[0].length > 0;
     
-    // if (resultUsername.length >0) {
-    //   dataBaseValidationErrors.usernameExist = 'Username already exists';
-    //   }
+//     if (resultUsername.length >0) {
+//       dataBaseValidationErrors.usernameExist = 'Username already exists';
+//       }
 
-    // const resultEmail = await sql`(SELECT email FROM users)`;
-    // //const userEmailExist = resultEmail.rows[0].length> 0;
+//     const resultEmail = await sql`(SELECT email FROM users)`;
+//     //const userEmailExist = resultEmail.rows[0].length> 0;
    
-    // if (resultEmail.length > 0) {
-    //   dataBaseValidationErrors.userEmailExist = 'Email already exists';
-    // }
+//     if (resultEmail.length > 0) {
+//       dataBaseValidationErrors.userEmailExist = 'Email already exists';
+//     }
 
+//     if (Object.keys(dataBaseValidationErrors).length > 0) {
+//       return res.status(401).json(dataBaseValidationErrors);
+//     }
+
+//     const hashedPassword = await bcrypt.hash(password, 10);
+//     const insertResult = await sql`
+//   INSERT INTO users (column1, column2, column3) VALUES (username, email, hashedPassword) RETURNING *
+// `;
+
+//       console.log(insertResult)
+    
+// // Extract the user details from the insertResult
+// const newUser = insertResult.rows[0];
+
+// //Generate the token using the new user's details
+// const token = jwt.sign(
+//   { id: newUser.id, email: newUser.email },
+//   process.env.JWT_SECRET,
+//   { expiresIn: '1h' }
+// );
+
+// console.log('Generated token:', token);
+
+// // Return the response with the token
+// return res.status(201).json({
+//   message: 'User registered successfully',token   
+// });
+
+//   } catch (error) {
+//     console.error('Error registering user:', error);
+//     return res.status(500).json({ message: 'Internal server error', error: error.message });
+//   }
+// });
+
+// app.post('/api/loginUser', async (req, res) => {
+//   const { email, password } = req.body;
+//  const errors ={}
+
+//   try {
+//     // Check if user exists
+//     const result = await sql('SELECT email FROM users');
+//     const user = result.rows[0];
+   
+//     if (!user) {
+//       errors.email = 'Invalid email or password' 
+//       console.log(errors.email)
+//     }
+//     if (user.length===0) {
+//       errors.noUserExist = 'User does not exist'
+      
+//     }
+   
+
+//     // Verify password
+//     const isPasswordValid = await bcrypt.compare(password, user.password);
+//     if (!isPasswordValid) {
+//       errors.password = 'Invalid email or password'
+//       console.log(errors.password)
+
+//     }
+//     if (Object.keys(errors).length >0) {
+//       return res.status(400).json(errors)
+      
+//     }
+
+//     // Generate JWT token
+//     const token = jwt.sign(
+//       { id: user.id, email: user.email },
+//       process.env.JWT_SECRET,
+//       { expiresIn: '1h' }
+//     );
+
+//     return res.json({ message: 'Login successful', token });
+//   } catch (error) {
+//     console.error('Error logging in:', error);
+//     return res.status(500).json({ message: 'Internal server error', error: error.message });
+//   }
+// });
+app.post('/api/registerUser', async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+    const dataBaseValidationErrors = {};
+
+    // Check if username already exists
+    const resultUsername = await sql`SELECT username FROM users WHERE username = ${username}`;
+    if (resultUsername.length > 0) {
+      dataBaseValidationErrors.usernameExist = 'Username already exists';
+    }
+
+    // Check if email already exists
+    const resultEmail = await sql`SELECT email FROM users WHERE email = ${email}`;
+    if (resultEmail.length > 0) {
+      dataBaseValidationErrors.userEmailExist = 'Email already exists';
+    }
+
+    // If username or email exists, return error response
     if (Object.keys(dataBaseValidationErrors).length > 0) {
       return res.status(401).json(dataBaseValidationErrors);
     }
 
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Insert the new user
     const insertResult = await sql`
-  INSERT INTO users (column1, column2, column3) VALUES (username, email, hashedPassword) RETURNING *
-`;
+      INSERT INTO users (username, email, password) 
+      VALUES (${username}, ${email}, ${hashedPassword}) 
+      RETURNING id, username, email`;
 
-      console.log(insertResult)
-    
-// Extract the user details from the insertResult
-const newUser = insertResult.rows[0];
+    // Extract the inserted user details
+    const newUser = insertResult[0];  // ✅ Corrected
 
-//Generate the token using the new user's details
-const token = jwt.sign(
-  { id: newUser.id, email: newUser.email },
-  process.env.JWT_SECRET,
-  { expiresIn: '1h' }
-);
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: newUser.id, email: newUser.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
 
-console.log('Generated token:', token);
+    console.log('Generated token:', token);
 
-// Return the response with the token
-return res.status(201).json({
-  message: 'User registered successfully',token   
-});
+    // Return response
+    return res.status(201).json({
+      message: 'User registered successfully',
+      token,
+    });
 
   } catch (error) {
     console.error('Error registering user:', error);
@@ -153,50 +252,6 @@ return res.status(201).json({
   }
 });
 
-app.post('/api/loginUser', async (req, res) => {
-  const { email, password } = req.body;
- const errors ={}
-
-  try {
-    // Check if user exists
-    const result = await sql('SELECT email FROM users');
-    const user = result.rows[0];
-   
-    if (!user) {
-      errors.email = 'Invalid email or password' 
-      console.log(errors.email)
-    }
-    if (user.length===0) {
-      errors.noUserExist = 'User does not exist'
-      
-    }
-   
-
-    // Verify password
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      errors.password = 'Invalid email or password'
-      console.log(errors.password)
-
-    }
-    if (Object.keys(errors).length >0) {
-      return res.status(400).json(errors)
-      
-    }
-
-    // Generate JWT token
-    const token = jwt.sign(
-      { id: user.id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
-
-    return res.json({ message: 'Login successful', token });
-  } catch (error) {
-    console.error('Error logging in:', error);
-    return res.status(500).json({ message: 'Internal server error', error: error.message });
-  }
-});
 const authMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization;
   
