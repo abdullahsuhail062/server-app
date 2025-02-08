@@ -228,8 +228,9 @@ app.post('/api/registerUser', async (req, res) => {
       VALUES (${username}, ${email}, ${hashedPassword}) 
       RETURNING id, username, email`;
 
-      const newUser = insertResult.rows[0];  // ✅ Correct way to access the inserted user
-
+      //const newUser = insertResult.rows[0];  // ✅ Correct way to access the inserted user
+    console.log(insertResult);
+    
       // Generate JWT token
       const token = jwt.sign(
         { id: newUser.id, email: newUser.email },
