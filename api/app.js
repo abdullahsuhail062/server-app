@@ -105,19 +105,19 @@ app.post('/api/registerUser', async (req, res) => {
   const dataBaseValidationErrors = {};
 
   try {
-    const resultUsername = await sql`(SELECT username FROM users)`;
-    const usernameExist = resultUsername.rows[0].length > 0;
+    // const resultUsername = await sql`(SELECT username FROM users)`;
+    // const usernameExist = resultUsername.rows[0].length > 0;
     
-    if (resultUsername.length >0) {
-      dataBaseValidationErrors.usernameExist = 'Username already exists';
-      }
+    // if (resultUsername.length >0) {
+    //   dataBaseValidationErrors.usernameExist = 'Username already exists';
+    //   }
 
-    const resultEmail = await sql`(SELECT email FROM users)`;
-    //const userEmailExist = resultEmail.rows[0].length> 0;
+    // const resultEmail = await sql`(SELECT email FROM users)`;
+    // //const userEmailExist = resultEmail.rows[0].length> 0;
    
-    if (resultEmail.length > 0) {
-      dataBaseValidationErrors.userEmailExist = 'Email already exists';
-    }
+    // if (resultEmail.length > 0) {
+    //   dataBaseValidationErrors.userEmailExist = 'Email already exists';
+    // }
 
     if (Object.keys(dataBaseValidationErrors).length > 0) {
       return res.status(401).json(dataBaseValidationErrors);
