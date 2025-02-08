@@ -159,7 +159,7 @@ app.post('/api/loginUser', async (req, res) => {
 
   try {
     // Check if user exists
-    const result = await sql(`SELECT email FROM users WHERE email`);
+    const result = await sql(`SELECT email FROM users`);
     const user = result.rows[0];
     console.log('Email Query Result (Full Response):', resultEmail);
       console.log('Rows:', resultEmail.rows); // Check if 'rows' is defined
