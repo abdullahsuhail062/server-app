@@ -172,19 +172,37 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-app.get('/api/fetchUserProfile',authMiddleware,async (req, res)=> {
-  const userId = req.userId; // Retrieve user ID from the request object or token
-  console.log(userId)
+// Authentication Middleware
+function authenticateUser(req, res, next) {
+  const token = req.headers.authorization?.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'Authentication required' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded; // Attach the user object to `req`
+    next();
+  } catch (err) {
+    return res.status(403).json({ message: 'Invalid or expired token' });
+  }
+}
+
+// Fetch User Profile Route
+app.get('/api/fetchUserProfile', authenticateUser, async (req, res) => {
+  const userId = req.user.id; // ✅ Extract user ID correctly
+  console.log('User ID:', userId);
+
   try {
     const result = await sql`
-      SELECT username, email FROM users WHERE id =
-      ${userId}`;
-      
+      SELECT username, email FROM users WHERE id = ${userId}`;
 
-    if (result.rows[0].length === 0) {
+    if (result.rows.length === 0) {  // ✅ Use `result.rows.length` instead of `result.rows[0].length`
       return res.status(404).json({ message: 'User not found' });
     }
-     const user = result.rows[0];
+
+    const user = result.rows[0];
     res.json(user);
   } catch (error) {
     console.error('Error fetching user profile:', error);
@@ -192,22 +210,6 @@ app.get('/api/fetchUserProfile',authMiddleware,async (req, res)=> {
   }
 });
 
-function authenticateUser(req, res, next) {
-  const token = req.headers.authorization?.split(' ')[1];
-  
-  
-  if (!token) {
-    return res.status(401).json({ message: 'Authentication required' });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // Add user info to the request
-    next();
-  } catch (err) {
-    res.status(403).json({ message: 'Invalid or expired token' });
-  }
-}
 
 app.delete('/api/deleteAccount', authenticateUser, async (req, res) => {
   try {
