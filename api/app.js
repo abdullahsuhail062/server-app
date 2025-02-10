@@ -197,7 +197,7 @@ app.get('/api/fetchUserProfile', authenticateUser, async (req, res) => {
   try {
     const result = await sql`
       SELECT username, email FROM users WHERE id = ${userId}`;
-      console.log(result.rows);
+      console.log(result.rows[0]);
       if (!result.rows || result.rows.length === 0) { 
         return res.status(404).json({ message: 'User not found' });
       }
