@@ -238,7 +238,7 @@ app.post('/api/tasks',authMiddleware, async (req, res) => {
   
   
   if (!title){
-   return res.status(400).json({error: 'Tittle is required'})
+   return res.status(400).json({error: 'Title is required'})
   }
 
   if (!description) {
