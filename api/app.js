@@ -317,10 +317,10 @@ app.get('/api/fetchUserProfile',authMiddleware,async (req, res)=> {
   const userId = req.userId; // Retrieve user ID from the request object or token
 
   try {
-    const result = await sql(
-      'SELECT username, email FROM users WHERE id = $1',
-      [userId]
-    );
+    const result = await sql`
+      SELECT username, email FROM users WHERE id =
+      ${userId}`
+    ;
 
     if (result.rows.length === 0) {
       return res.status(404).json({ message: 'User not found' });
