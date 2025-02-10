@@ -322,7 +322,7 @@ app.get('/api/fetchUserProfile',authMiddleware,async (req, res)=> {
       ${userId}`;
       console.log(userId)
 
-    if (result.rows.length === 0) {
+    if (result.rows[0].length === 0) {
       return res.status(404).json({ message: 'User not found' });
     }
      const user = result.rows[0];
