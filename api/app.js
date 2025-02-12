@@ -287,7 +287,7 @@ app.delete('/api/deleteTask', async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'Task deleted successfully',
-      deletedTask: result.rows[0], // Return details of the deleted task
+      deletedTask: result[0], // Return details of the deleted task
     });
   } catch (error) {
     console.error('Error deleting task:', error);
