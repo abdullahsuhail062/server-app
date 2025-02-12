@@ -321,7 +321,7 @@ app.put('/api/taskCompeletion', async (req, res) => {
     }
 
     // Respond with the updated task
-    res.status(200).json({ success: true, updatedTask: result.rows[0] });
+    res.status(200).json({ success: true, updatedTask: result[0] });
   } catch (error) {
     console.error('Error updating task completion:', error);
     res.status(500).json({ error: 'Internal server error.' });
