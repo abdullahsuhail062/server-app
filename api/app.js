@@ -26,34 +26,12 @@ app.use((req, res, next) => {
   next();
 });
 
-import pkg from 'pg';
-const { Client } = pkg;
-
-// const sql = new Client({
-//   host: process.env.POSTGRES_HOST,
-//   port: process.env.POSTGRES_PORT,
-//   user: process.env.POSTGRES_USER,
-//   password: process.env.POSTGRES_PASSWORD,
-//   database: process.env.POSTGRES_DATABASE,
-
-//   ssl: {
-//     rejectUnauthorized: false
-//   },
-//   connectionTimeoutMillis: 10000
-// });
-
-// sql.connect()
-//   .then(() => console.log('Connected to the database!!!'))
-//   .catch(err => console.error('Connection error', err.stack));
-
 
 import { neon } from '@neondatabase/serverless';
 const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
 
 //const sql = neon(process.env.DATABASE_URL);
 const sql = neon(`postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?sslmode=require`);
-const checkConnection = sql`SELECT NOW()`
-console.log('database connection', checkConnection)
 
 
 app.post('/api/registerUser', async (req, res) => {
@@ -255,7 +233,7 @@ app.post('/api/tasks',authMiddleware, async (req, res) => {
 
       );
       
-      res.status(201).json(result.rows[0]);
+      res.status(201).json(result[0]);
   } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
