@@ -209,7 +209,7 @@ app.delete('/api/deleteAccount', authenticateUser, async (req, res) => {
 });
 // 
 app.post('/api/tasks',authMiddleware, async (req, res) => {
-  const { description,title } = req.body;
+  const { title, description} = req.body;
   const userId =req.userId;
   console.log(userId);
   
