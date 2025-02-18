@@ -256,7 +256,7 @@ app.put('/api/updateTask', async (req, res) => {
       );
 
       if (result.rows.length > 0) {
-          res.status(200).json(result.rows[0]);
+          res.status(200).json(result[0]);
       } else {
           res.status(404).json({ error: 'Task not found' });
       }
