@@ -228,7 +228,7 @@ app.post('/api/tasks',authMiddleware, async (req, res) => {
 
   try {
 
-    const isTitleNameUnique = await sql('SELECT title FROM tasks WHERE title = $1')
+    const isTitleNameUnique = await sql`SELECT title FROM tasks WHERE title = ${title}`
     if (isTitleNameUnique) {
       res.status(400).json({title: 'title name exist already, choose an unique name'})
       
