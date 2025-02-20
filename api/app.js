@@ -219,21 +219,16 @@ app.post('/api/tasks', authMiddleware, async (req, res) => {
   if (!userId) return res.status(400).json({ error: 'userId is required' });
 
   try {
-    async function isTitleUnique(title, userId) {
-      const result = await sql`SELECT COUNT(*) FROM tasks WHERE title = ${title} AND userId = ${userId}`;
-      return result[0].count === '0'; // Returns true if the title is unique for this user
-    }
-  
-    const isUnique = await isTitleUnique(title, userId);
-    if (!isUnique) {
-      console.log('Title already exists for this user.');
-      return res.status(400).json({ error: 'Title already exists. Choose a different one' });
+    const isTitleUnique = await sql`SELECT title FROM tasks WHERE title =${title}`;
+    if (isTitleUnique.length>0) {
+      return res.status(400).json({error: 'Title already exists. choose a different one'})
+      
     }
 
-    const result = await sql(
-      'INSERT INTO tasks (title, description, userId) VALUES ($1, $2, $3) RETURNING *',
-      [title, description, userId]
-    );
+    const result = await sql`INSERT INTO tasks (title, description, userId) VALUES (${title}, ${description}, ${userId}) RETURNING *`
+      
+      
+    
     
     res.status(201).json(result[0]);
   } catch (error) {
