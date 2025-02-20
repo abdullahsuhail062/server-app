@@ -227,7 +227,7 @@ app.post('/api/tasks', authMiddleware, async (req, res) => {
     const isUnique = await isTitleUnique(title, userId);
     if (!isUnique) {
       console.log('Title already exists for this user.');
-      return res.status(400).json({ error: 'Title already exists. Choose a different one.' });
+      return res.status(400).json({ error: 'Title already exists. Choose a different one' });
     }
 
     const result = await sql(
