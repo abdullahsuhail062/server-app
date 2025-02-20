@@ -208,50 +208,37 @@ app.delete('/api/deleteAccount', authenticateUser, async (req, res) => {
   }
 });
 // 
-app.post('/api/tasks',authMiddleware, async (req, res) => {
-  const { title, description} = req.body;
-  const userId =req.userId;
+app.post('/api/tasks', authMiddleware, async (req, res) => {
+  const { title, description } = req.body;
+  const userId = req.userId;
+  
   console.log(userId);
   
-  
-  
-  if (!title){
-   return res.status(400).json({error: 'Title is required'})
-  }
-
-  if (!description) {
-      return res.status(400).json({ error: 'Description is required' });
-  }
-  if (!userId) {
-    return res.status(400).json({error: 'userId is required'})
-  }
+  if (!title) return res.status(400).json({ error: 'Title is required' });
+  if (!description) return res.status(400).json({ error: 'Description is required' });
+  if (!userId) return res.status(400).json({ error: 'userId is required' });
 
   try {
+    async function isTitleUnique(title, userId) {
+      const result = await sql`SELECT COUNT(*) FROM tasks WHERE title = ${title} AND userId = ${userId}`;
+      return result[0].count === '0'; // Returns true if the title is unique for this user
+    }
+  
+    const isUnique = await isTitleUnique(title, userId);
+    if (!isUnique) {
+      console.log('Title already exists for this user.');
+      return res.status(400).json({ error: 'Title already exists. Choose a different one.' });
+    }
 
-    async function isTitleUnique(title) {
-      const result = await sql`SELECT COUNT(*) FROM tasks WHERE title = ${title}`;
-      return result[0].count === '0'; // If count is 0, it's unique
-  }
-  
-  
-  const isUnique = await isTitleUnique(title);
-  
-  if (!isUnique) {
-      console.log('Title already exists. Choose a different one.');
-      return res.status(400).json({title: 'Title already exists. Choose a different one'})
-  }
-  
-    
     const result = await sql(
-          'INSERT INTO tasks (title,description,userId) VALUES ($1,$2,$3) RETURNING *',
-          [description,title,userId]
-
-      );
-      
-      res.status(201).json(result[0]);
+      'INSERT INTO tasks (title, description, userId) VALUES ($1, $2, $3) RETURNING *',
+      [title, description, userId]
+    );
+    
+    res.status(201).json(result[0]);
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
