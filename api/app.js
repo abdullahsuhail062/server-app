@@ -211,6 +211,8 @@ app.delete('/api/deleteAccount', authenticateUser, async (req, res) => {
 app.post('/api/tasks', authMiddleware, async (req, res) => {
   const { description } = req.body;
   const { title } = req.body;
+  console.log('title', title);
+  
   
 
   const userId = req.userId;
