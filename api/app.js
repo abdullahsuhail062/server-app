@@ -228,11 +228,19 @@ app.post('/api/tasks',authMiddleware, async (req, res) => {
 
   try {
 
-    const isTitleNameUnique = await sql`SELECT title FROM tasks WHERE title = ${title}`
-    if (isTitleNameUnique.length>0) {
-      res.status(400).json({title: 'title name exist already, choose an unique name'})
-      
-    }  
+    async function isTitleUnique(title) {
+      const result = await sql`SELECT COUNT(*) FROM tasks WHERE title = ${title}`;
+      return result[0].count === '0'; // If count is 0, it's unique
+  }
+  
+  
+  const isUnique = await isTitleUnique(title);
+  
+  if (!isUnique) {
+      console.log('Title already exists. Choose a different one.');
+      return res.status(400).json({title: 'Title already exists. Choose a different one'})
+  }
+  
     
     const result = await sql(
           'INSERT INTO tasks (title,description,userId) VALUES ($1,$2,$3) RETURNING *',
