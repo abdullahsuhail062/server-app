@@ -269,9 +269,9 @@ app.put('/api/updateTask', async (req, res) => {
 
 // Endpoint to delete a task by id
 app.delete('/api/deleteTask', async (req, res) => {
-  const title = req.query.taskTitle; // Retrieve taskTitle from  params
-  const taskTitle = req.params.taskTitle
-  console.log(title,taskTitle);
+  const title = req.query.title; // Retrieve taskTitle from  params
+  const taskTitle = req.params.title
+  console.log(title,title);
   
   if (!title) {
     return res.status(400).json({ error: 'Task title is required' });
