@@ -270,7 +270,7 @@ app.put('/api/updateTask', async (req, res) => {
 // Endpoint to delete a task by id
 app.delete('/api/deleteTask', async (req, res) => {
   const title = req.query.taskTitle; // Retrieve taskTitle from  params
-  const taskTitle = req.body.taskTitle
+  const taskTitle = req.params.taskTitle
   console.log(title,taskTitle);
   
   if (!title) {
