@@ -211,8 +211,6 @@ app.delete('/api/deleteAccount', authenticateUser, async (req, res) => {
 app.post('/api/tasks', authMiddleware, async (req, res) => {
   const { description } = req.body;
   const { title } = req.body;
-  console.log('title', title);
-  
   
 
   const userId = req.userId;
@@ -279,7 +277,7 @@ app.delete('/api/deleteTask', async (req, res) => {
 
   try {
     const result = await sql(
-      'DELETE FROM tasks WHERE id = $1 RETURNING *', 
+      'DELETE FROM tasks WHERE title = $1 RETURNING *', 
       [taskId]
     );
 
@@ -342,51 +340,8 @@ app.get('/api/fetchTasks', authMiddleware, async (req, res) => {
   }
 });
 
-const baseURL = "https://api.aimlapi.com/v1";
-const apiKey = "c88657e0a6ad41a18809bc0a4321126b"; // Replace with your actual API key
-const api = new OpenAI({
-  apiKey,
-  baseURL,
-});
 
-// Endpoint to interact with AI
-app.post("/ask", async (req, res) => {
-  const { userPrompt } = req.body;
 
-  if (!userPrompt) {
-    return res.status(400).json({ error: "userPrompt is required" });
-  }
-
-  try {
-    const systemPrompt = "You are a travel agent. Be descriptive and helpful";
-
-    const completion = await api.chat.completions.create({
-      model: "mistralai/Mistral-7B-Instruct-v0.2",
-      messages: [
-        {
-          role: "system",
-          content: systemPrompt,
-        },
-        {
-          role: "user",
-          content: userPrompt,
-        },
-      ],
-      temperature: 0.7,
-      max_tokens: 256,
-    });
-
-    const response = completion.choices[0].message.content;
-
-    res.json({
-      userPrompt,
-      response,
-    });
-  } catch (error) {
-    console.error("Error calling OpenAI API:", error);
-    res.status(500).json({ error: "Failed to process request" });
-  }
-});
 
 
 // Start the server
