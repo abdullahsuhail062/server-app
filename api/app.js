@@ -275,10 +275,7 @@ app.delete('/api/deleteTask', async (req, res) => {
   // }
 
   try {
-    const result = await sql(
-      'DELETE FROM tasks WHERE title = $1 RETURNING *', 
-      [title]
-    );
+    const result = await sql`DELETE FROM tasks WHERE title = ${title} RETURNING *`
 
     if (result.rowCount === 0) {
       return res.status(404).json({ success: false, message: 'Task not found' });
