@@ -160,8 +160,8 @@ function authenticateUser(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded.id; // Attach the user object to `req`
-    console.log(req.user);
+    req.user = {id:decoded.id}; // Attach the user object to `req`
+    console.log(req.user.id);
     
     next();
   } catch (err) {
@@ -171,7 +171,7 @@ function authenticateUser(req, res, next) {
 
 // Fetch User Profile Route
 app.get('/api/fetchUserProfile', authenticateUser, async (req, res) => {
-  const userId = req.user; // ✅ Extract user ID correctly
+  const userId = req.user.id; // ✅ Extract user ID correctly
   console.log('User ID:', userId);
 
   try {
