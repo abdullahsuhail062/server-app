@@ -164,7 +164,7 @@ function authenticateUser(req, res, next) {
     console.log(req.user.id)
     next();
   } catch (err) {
-    return res.status(403).json({ message: 'Invalid or expired token' });
+    return res.status(403).json({ message: req.user.id});
   }
 }
 
