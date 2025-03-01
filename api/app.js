@@ -171,7 +171,7 @@ function authenticateUser(req, res, next) {
 
 // Fetch User Profile Route
 app.get('/api/fetchUserProfile', authenticateUser, async (req, res) => {
-  const userId = req.user.id; // ✅ Extract user ID correctly
+  const userId = req.user; // ✅ Extract user ID correctly
   console.log('User ID:', userId);
 
   try {
