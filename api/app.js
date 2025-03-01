@@ -160,7 +160,7 @@ function authenticateUser(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // Attach the user object to `req`
+    req.user.id = decoded; // Attach the user object to `req`
     console.log(decoded)
     next();
   } catch (err) {
