@@ -65,13 +65,13 @@ app.post('/api/registerUser', async (req, res) => {
       VALUES (${username}, ${email}, ${hashedPassword}) 
       RETURNING id, username, email`;
 
-      const newUser = insertResult  // ✅ Correct way to access the inserted user
+      const newUser = insertResult[0]  // ✅ Correct way to access the inserted user
     console.log(newUser);
     
     
       // Generate JWT token
       const token = jwt.sign(
-        { id: user.id, email: user.email },
+        { id: newUser.id, email: newUser.email },
         process.env.JWT_SECRET,
         { expiresIn: '1h' }
       );
