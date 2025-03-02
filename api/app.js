@@ -71,7 +71,7 @@ app.post('/api/registerUser', async (req, res) => {
     
       // Generate JWT token
       const token = jwt.sign(
-        { id: newUser.id, email: newUser.email },
+        { id: user.id, email: user.email },
         process.env.JWT_SECRET,
         { expiresIn: '1h' }
       );
