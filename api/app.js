@@ -316,8 +316,7 @@ app.put('/api/taskCompeletion', async (req, res) => {
   try {
     // Update task completion status
     const result = await sql`
-      UPDATE tasks SET completed = $1 WHERE title = ${title}  RETURNING *,
-      [completed, taskTitle]`;
+      UPDATE tasks SET completed = $1 WHERE title = ${taskTitle}  RETURNING *`;
 
     if (result.rowCount === 0) {
       return res.status(404).json({ error: 'Task not found.' });
