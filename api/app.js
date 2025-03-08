@@ -300,9 +300,9 @@ app.delete('/api/deleteTask', async (req, res) => {
 });
 
 app.put('/api/taskCompeletion', async (req, res) => {
-  const { completed, taskId } = req.body; // Extract completed status and taskId from the request body
+  const { completed, taskTitle } = req.body; // Extract completed status and taskId from the request body
 
-  console.log('Received data:', { completed, taskId });
+  console.log('Received data:', { completed, taskTitle });
 
   // Validate input
   if (typeof completed !== 'boolean') {
@@ -315,10 +315,9 @@ app.put('/api/taskCompeletion', async (req, res) => {
 
   try {
     // Update task completion status
-    const result = await sql(
-      'UPDATE tasks SET completed = $1 WHERE id = $2 RETURNING *',
-      [completed, taskId]
-    );
+    const result = await sql`
+      UPDATE tasks SET completed = $1 WHERE title = ${title}  RETURNING *,
+      [completed, taskTitle]`;
 
     if (result.rowCount === 0) {
       return res.status(404).json({ error: 'Task not found.' });
