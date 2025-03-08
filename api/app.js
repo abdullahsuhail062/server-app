@@ -309,8 +309,8 @@ app.put('/api/taskCompeletion', async (req, res) => {
     return res.status(400).json({ error: 'Invalid completion status. Must be a boolean.' });
   }
 
-  if (!taskId) {
-    return res.status(400).json({ error: 'Task ID is required.' });
+  if (!taskTitle) {
+    return res.status(400).json({ error: 'Task Title is required.' });
   }
 
   try {
