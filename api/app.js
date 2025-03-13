@@ -306,7 +306,7 @@ app.get('/api/checkTitle',async (req, res) => {
   }
 
     try{
-      const result = await sql`SELECT FROM tasks WHERE title = ${title}`
+      const isTitleUnique = await sql`SELECT FROM tasks WHERE title = ${title}`
       if (isTitleUnique.length>0) {
         return res.status(400).json({error: 'Title already exists. choose a different one'})
       }
