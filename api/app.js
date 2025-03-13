@@ -298,11 +298,27 @@ app.delete('/api/deleteTask', async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 });
+app.get('/api/checkTitle',async (req, res) => {
+  const {taskTitle} = req.params.title
+  if (!title) {
+    res.json({error: 'title is required'})
+    
+  }
+
+    try{
+      const result = await sql`SELECT FROM tasks WHERE title = ${title}`
+      if (isTitleUnique.length>0) {
+        return res.status(400).json({error: 'Title already exists. choose a different one'})
+      }
+      res.json({title:result()})
+      }catch(error){console.error(error);
+        res.status(500).json({ error: 'Internal server error.' });
+      }
+})
 
 app.put('/api/taskCompeletion', async (req, res) => {
   const { completed, taskTitle } = req.body; // Extract completed status and taskId from the request body
 
-  console.log('Received data:', { completed, taskTitle });
 
   // Validate input
   if (typeof completed !== 'boolean') {
@@ -312,7 +328,6 @@ app.put('/api/taskCompeletion', async (req, res) => {
   if (!taskTitle) {
     return res.status(400).json({ error: 'Task Title is required.' });
   }
-
   try {
     // Update task completion status
     const result = await sql`
