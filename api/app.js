@@ -299,7 +299,7 @@ app.delete('/api/deleteTask', async (req, res) => {
   }
 });
 app.get('/api/checkTitle',async (req, res) => {
-  const {taskTitle} = req.query
+  const {title} = req.query
   if (!title) {
     res.json({error: 'title is required'})
     
