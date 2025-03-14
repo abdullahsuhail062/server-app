@@ -310,7 +310,7 @@ app.get('/api/checkTitle',async (req, res) => {
       if (isTitleUnique.length>0) {
         return res.status(400).json({error: 'Title already exists. choose a different one'})
       }
-      res.json({title:result()})
+      res.json({title:isTitleUnique[0]})
       }catch(error){console.error(error);
         res.status(500).json({ error: 'Internal server error.' });
       }
