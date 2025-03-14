@@ -301,7 +301,7 @@ app.delete('/api/deleteTask', async (req, res) => {
 app.get('/api/checkTitle',async (req, res) => {
   const {title} = req.query
   if (!title) {
-    res.json({error: 'title is required'})
+   return res.status(400).json({error: 'title is required'})
     
   }
 
