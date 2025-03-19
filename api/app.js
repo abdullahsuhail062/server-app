@@ -302,12 +302,13 @@ app.get('/api/checkTitle',async (req, res) => {
   const {title} = req.query
 
 
+
     try{
       const isTitleUnique = await sql`SELECT FROM tasks WHERE title = ${title}`
       if (isTitleUnique.length>0) {
         return res.status(400).json({error: 'Title already exists. choose a different one'})
       }
-      res.json({title:isTitleUnique[0]})
+      res.json({title:'You are good to go'})
       }catch(error){console.error(error);
         res.status(500).json({ error: 'Internal server error.' });
       }
