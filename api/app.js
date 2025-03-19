@@ -314,6 +314,22 @@ app.get('/api/checkTitle',async (req, res) => {
       }
 })
 
+app.get('api/onFocusTitleChecking', async (req, res) => {
+  const {title} = req.query
+
+  try{
+    const isTitleUnique = await sql`SELECT FROM tasks WHERE title = ${title}`
+    if (isTitleUnique.length>0) {
+      return res.status(400).json({error: 'Title already exists. choose a different one'})
+    }
+    res.json({title:'You are good to go'})
+    }catch(error){console.error(error);
+      res.status(500).json({ error: 'Internal server error.' });
+    }
+
+ 
+})
+
 app.put('/api/taskCompeletion', async (req, res) => {
   const { completed, taskTitle } = req.body; // Extract completed status and taskId from the request body
 
