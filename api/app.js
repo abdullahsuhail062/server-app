@@ -314,7 +314,7 @@ app.get('/api/checkTitle',async (req, res) => {
       }
 })
 
-app.get('api/onFocusTitleChecking', async (req, res) => {
+app.get('/api/onFocusTitleChecking', async (req, res) => {
   const {title} = req.query
 
   try{
