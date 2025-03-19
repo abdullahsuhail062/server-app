@@ -300,10 +300,7 @@ app.delete('/api/deleteTask', async (req, res) => {
 });
 app.get('/api/checkTitle',async (req, res) => {
   const {title} = req.query
-  if (!title) {
-   return res.status(400).json({error: 'title is required'})
-    
-  }
+
 
     try{
       const isTitleUnique = await sql`SELECT FROM tasks WHERE title = ${title}`
