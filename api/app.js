@@ -384,17 +384,24 @@ app.post('api/toggleFavoriteIconState', async (req, res) =>{
   }
 })
 
-app.get('api/fetchFavoriteIconState', async (req, res) =>{
-  //const {userId} = req.query
+app.get('/api/fetchFavoriteIconState', async (req, res) => {
+  const { isFavorite } = req.query; // Get isFavorite from request query parameters
 
-  try{
-    const result = await sql`SELECT FROM favorite WHERE isFavorite = ${isFavorite}`
-    res.status(200).json({isFavorite: result[0]})
+  try {
+    const result = await sql`SELECT * FROM favorite WHERE isFavorite = ${isFavorite}`;
 
-  } catch (error) {console.error('Error storeing favorite icon state');
-    res.status(500).json({error: 'database failed'})
+    if (result.length === 0) {
+      return res.status(404).json({ error: 'No data found' }); // Use 404 for "not found"
+    }
+
+    res.status(200).json({ isFavorite: result });
+
+  } catch (error) {
+    console.error('Error fetching favorite icon state:', error);
+    res.status(500).json({ error: 'Database operation failed' });
   }
-})
+});
+
 
 
 
