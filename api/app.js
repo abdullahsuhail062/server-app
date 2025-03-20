@@ -369,14 +369,15 @@ app.get('/api/fetchTasks', authMiddleware, async (req, res) => {
   }
 });
 
-app.post('api/toggleFavoriteIconState', async (req, res) =>{
+app.post('/api/toggleFavoriteIconState',authMiddleware, async (req, res) =>{
   const {isFavorite} = req.query
-  console.log(isFavorite);
+  const userId = req.user.id
+  
   
 
   try{
-    const result = await sql`INSERT INTO favorite (isFavorte) VALUES ${isFavorite} RETURNING *`
-    res.status(200).json({isFavorite: result[0]})
+    const result = await sql`INSERT INTO favorite (isFavorte, userId) VALUES ${isFavorite},${userId} RETURNING *`
+    res.status(200).json({isFavorite: result[0].userId})
 
   } catch (error) {console.error('Error storeing favorite icon state');
     res.status(500).json({error: 'database failed'})
@@ -395,7 +396,7 @@ app.get('/api/fetchFavoriteIconState', authMiddleware,async (req, res) => {
       return res.status(404).json({ error: 'No data found' }); // Use 404 for "not found"
     }
 
-    res.status(200).json({ isFavorite: result.isFavorite });
+    res.status(200).json({ isFavorite: result[0].isFavorite });
 
   } catch (error) {
     console.error('Error fetching favorite icon state:', error);
