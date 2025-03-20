@@ -174,7 +174,6 @@ function authenticateUser(req, res, next) {
 // Fetch User Profile Route
 app.get('/api/fetchUserProfile', authenticateUser, async (req, res) => {
   const userId = req.user.id; // ✅ Extract user ID correctly
-  console.log('User ID:', userId);
 
   try {
     const result = await sql`
@@ -384,17 +383,19 @@ app.post('api/toggleFavoriteIconState', async (req, res) =>{
   }
 })
 
-app.get('/api/fetchFavoriteIconState', async (req, res) => {
-  const { isFavorite } = req.query; // Get isFavorite from request query parameters
-
+app.get('/api/fetchFavoriteIconState', authMiddleware,async (req, res) => {
+  const userId =req.user.id
+        if (!userId) {
+          return res.status(400).json({error: 'User ID required'})
+        }
   try {
-    const result = await sql`SELECT * FROM favorite WHERE isFavorite = ${isFavorite}`;
+    const result = await sql`SELECT * FROM favorite WHERE userId = ${userId}`;
 
     if (result.length === 0) {
       return res.status(404).json({ error: 'No data found' }); // Use 404 for "not found"
     }
 
-    res.status(200).json({ isFavorite: result });
+    res.status(200).json({ isFavorite: result.isFavorite });
 
   } catch (error) {
     console.error('Error fetching favorite icon state:', error);
