@@ -372,6 +372,8 @@ app.get('/api/fetchTasks', authMiddleware, async (req, res) => {
 
 app.post('api/toggleFavoriteIconState', async (req, res) =>{
   const {isFavorite} = req.query
+  console.log(isFavorite);
+  
 
   try{
     const result = await sql`INSERT INTO favorite (isFavorte) VALUES ${isFavorite} RETURNING *`
