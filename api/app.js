@@ -378,7 +378,7 @@ app.get('/api/fetchTasks', authMiddleware, async (req, res) => {
 
 
 
-app.post('/api/toggleFavoriteIconState',authMiddleware, async (req, res) =>{
+app.post('/api/toggleFavoriteIconState',authenticateUser, async (req, res) =>{
   const {isFavorite} = req.query
   const userId = req.user.id
   
@@ -394,7 +394,7 @@ app.post('/api/toggleFavoriteIconState',authMiddleware, async (req, res) =>{
 })
 
 
-app.get('/api/fetchFavoriteIconState', authMiddleware,async (req, res) => {
+app.get('/api/fetchFavoriteIconState', authenticateUser,async (req, res) => {
   const userId =req.user.id
         if (!userId) {
           return res.status(400).json({error: 'User ID required'})
