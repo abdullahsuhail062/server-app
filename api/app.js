@@ -370,6 +370,29 @@ app.get('/api/fetchTasks', authMiddleware, async (req, res) => {
   }
 });
 
+app.post('api/toggleFavoriteIconState', async (req, res) =>{
+  const {isFavorite} = req.query
+
+  try{
+    const result = await sql`INSERT INTO favorite (isFavorte) VALUES ${isFavorite} RETURNING *`
+    res.status(200).json({isFavorite: result[0]})
+
+  } catch (error) {console.error('Error storeing favorite icon state');
+    res.status(500).json({error: 'database failed'})
+  }
+})
+
+app.get('api/fetchFavoriteIconState', async (req, res) =>{
+  //const {userId} = req.query
+
+  try{
+    const result = await sql`SELECT FROM favorite WHERE isFavorite = ${isFavorite}`
+    res.status(200).json({isFavorite: result[0]})
+
+  } catch (error) {console.error('Error storeing favorite icon state');
+    res.status(500).json({error: 'database failed'})
+  }
+})
 
 
 
