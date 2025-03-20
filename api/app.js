@@ -374,25 +374,7 @@ app.get('/api/fetchTasks', authMiddleware, async (req, res) => {
     res.status(500).json({ error: 'Database  failed' });
   }
 });
-function authenticateUser(req, res, next) {
-  const token = req.headers.authorization?.split(' ')[1];
 
-  if (!token) {
-    return res.status(401).json({ message: 'Authentication required' });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(decoded);
-    
-    req.user = {id:decoded.id}; // Attach the user object to `req`
-    console.log(req.user.id);
-    
-    next();
-  } catch (err) {
-    return res.status(403).json({ message: 'Invalid or expired token'});
-  }
-}
 
 
 
@@ -404,32 +386,12 @@ app.post('/api/toggleFavoriteIconState',authMiddleware, async (req, res) =>{
 
   try{
     const result = await sql`INSERT INTO favorite (isFavorte, userId) VALUES ${isFavorite},${userId} RETURNING *`
-    res.status(200).json({isFavorite: result[0].userId})
+    res.status(200).json({isFavorite: result[0].isFavorite})
 
   } catch (error) {console.error('Error storeing favorite icon state');
     res.status(500).json({error: 'database failed'})
   }
 })
-function authenticateUser(req, res, next) {
-  const token = req.headers.authorization?.split(' ')[1];
-
-  if (!token) {
-    return res.status(401).json({ message: 'Authentication required' });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(decoded);
-    
-    req.user = {id:decoded.id}; // Attach the user object to `req`
-    console.log(req.user.id);
-    
-    next();
-  } catch (err) {
-    return res.status(403).json({ message: 'Invalid or expired token'});
-  }
-}
-
 
 
 app.get('/api/fetchFavoriteIconState', authMiddleware,async (req, res) => {
