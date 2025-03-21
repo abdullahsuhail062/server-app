@@ -409,7 +409,7 @@ app.get('/api/fetchFavoriteIconState', authenticateUser, async (req, res) => {
       return res.status(404).json({ error: 'No data found' }); // Return 404 if no data
     }
 
-    res.status(200).json({ isFavorite: result[0].isFavorite ?? false });
+    res.status(200).json({ isFavorite: result[0].isfavorite ?? false });
 
   } catch (error) {
     console.error('Error fetching favorite icon state:', error);
