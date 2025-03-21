@@ -395,24 +395,28 @@ app.post('/api/toggleFavoriteIconState',authenticateUser, async (req, res) =>{
 
 
 app.get('/api/fetchFavoriteIconState', authenticateUser, async (req, res) => {
-  const userId =req.user.id
-        if (!userId) {
-          return res.status(400).json({error: 'User ID required'})
-        }
+  const userId = req.user?.id; // Ensure req.user is defined
+
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID required' });
+  }
+
   try {
-    const result = await sql`SELECT * FROM favorite WHERE userId = ${userId}`;
+    const result = await sql`
+      SELECT * FROM favorite WHERE userId = ${userId} ORDER BY id DESC LIMIT 1`;
 
     if (result.length === 0) {
-      return res.status(404).json({ error: 'No data found' }); // Use 404 for "not found"
+      return res.status(404).json({ error: 'No data found' }); // Return 404 if no data
     }
 
-    res.status(200).json({ isFavorite: result[0].isFavorite });
+    res.status(200).json({ isFavorite: result[0].isFavorite ?? false });
 
   } catch (error) {
     console.error('Error fetching favorite icon state:', error);
     res.status(500).json({ error: 'Database operation failed' });
   }
 });
+
 
 
 
