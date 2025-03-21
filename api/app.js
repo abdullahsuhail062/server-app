@@ -379,13 +379,13 @@ app.get('/api/fetchTasks', authMiddleware, async (req, res) => {
 
 
 app.post('/api/toggleFavoriteIconState',authenticateUser, async (req, res) =>{
-  const {isFavorite} = req.query
+  const {isFavorite} = req.body
   const userId = req.user.id
   
   
 
   try{
-    const result = await sql`INSERT INTO favorite (isFavorte, userId) VALUES ${isFavorite},${userId} RETURNING *`
+    const result = await sql`INSERT INTO favorite (isFavorite, userId) VALUES (${isFavorite},${userId}) RETURNING *`
     res.status(200).json({isFavorite: result[0].isFavorite})
 
   } catch (error) {console.error('Error storeing favorite icon state');
