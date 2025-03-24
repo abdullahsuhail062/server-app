@@ -221,10 +221,11 @@ app.post('/api/tasks', authMiddleware, async (req, res) => {
   const { description } = req.body;
   const { title } = req.body;
   const {date} = req.body
+
   
 
   const userId = req.userId;
-  console.log(userId)
+  console.log(date)
   
   
   if (!title) return res.status(400).json({ error: 'Title is required' });
