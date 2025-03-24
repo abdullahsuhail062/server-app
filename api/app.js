@@ -368,8 +368,7 @@ app.get('/api/fetchTasks', authMiddleware, async (req, res) => {
   const userId = req.userId; // Extract userId from the middleware
   try {
     const result = await sql('SELECT * FROM tasks WHERE userId = $1', [userId]);
-    const updatedResult =result.date.split('T')[0]
-    res.status(200).json(updatedResult);
+    res.status(200).json(result);
   } catch (error) {
     console.error('Error fetching tasks:', error);
     res.status(500).json({ error: 'Database  failed' });
