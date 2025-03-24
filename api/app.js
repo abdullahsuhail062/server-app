@@ -238,7 +238,7 @@ app.post('/api/tasks', authMiddleware, async (req, res) => {
       
     }
 
-    const result = await sql`INSERT INTO tasks (date,title, description, userId) VALUES (${date},${title}, ${description}, ${userId}) RETURNING *`
+    const result = await sql`INSERT INTO tasks (date,title, description, userId) VALUES (${title}, ${description}, ${userId},${date}) RETURNING *`
       
       
     
