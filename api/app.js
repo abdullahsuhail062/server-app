@@ -220,24 +220,25 @@ app.delete('/api/deleteAccount', authenticateUser, async (req, res) => {
 app.post('/api/tasks', authMiddleware, async (req, res) => {
   const { description } = req.body;
   const { title } = req.body;
+  const {date} = req.body
   
 
   const userId = req.userId;
   
-  console.log(userId);
   
   if (!title) return res.status(400).json({ error: 'Title is required' });
   if (!description) return res.status(400).json({ error: 'Description is required' });
   if (!userId) return res.status(400).json({ error: 'userId is required' });
-
+  if (!date) {return res.status(400).json({error: 'date is required'})}
   try {
+  
     const isTitleUnique = await sql`SELECT title FROM tasks WHERE title =${title}`;
     if (isTitleUnique.length>0) {
       return res.status(400).json({error: 'Title already exists. choose a different one'})
       
     }
 
-    const result = await sql`INSERT INTO tasks (title, description, userId) VALUES (${title}, ${description}, ${userId}) RETURNING *`
+    const result = await sql`INSERT INTO tasks (date,title, description, userId) VALUES (${date},${title}, ${description}, ${userId}) RETURNING *`
       
       
     
