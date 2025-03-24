@@ -221,10 +221,6 @@ app.post('/api/tasks', authMiddleware, async (req, res) => {
   const { description } = req.body;
   const { title } = req.body;
   const {date} = req.body
-
-
-  
-
   const userId = req.userId;
   console.log(req.body)
   
