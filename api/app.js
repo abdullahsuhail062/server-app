@@ -222,13 +222,14 @@ app.post('/api/tasks', authMiddleware, async (req, res) => {
   const { title } = req.body;
   const {date} = req.body
   const userId = req.userId;
-  console.log(req.body)
-  
+  const {time} = req.body;  
   
   if (!title) return res.status(400).json({ error: 'Title is required' });
   if (!description) return res.status(400).json({ error: 'Description is required' });
   if (!userId) return res.status(400).json({ error: 'userId is required' });
   if (!date) {return res.status(400).json({error: 'date is required'})}
+  if (!time) {return res.status(400).json({error: 'time is required'})}
+    
   try {
   
     const isTitleUnique = await sql`SELECT title FROM tasks WHERE title =${title}`;
@@ -237,7 +238,7 @@ app.post('/api/tasks', authMiddleware, async (req, res) => {
       
     }
 
-    const result = await sql`INSERT INTO tasks (title, description, userId,date) VALUES (${title}, ${description}, ${userId},${date}) RETURNING *`
+    const result = await sql`INSERT INTO tasks (title, description, userId,date,time) VALUES (${title}, ${description}, ${userId},${date},${time}) RETURNING *`
       
       
     
@@ -369,7 +370,6 @@ app.get('/api/fetchTasks', authMiddleware, async (req, res) => {
   try {
     const result = await sql('SELECT * FROM tasks WHERE userId = $1', [userId]);
     res.status(200).json(result);
-    console.log(result)
   } catch (error) {
     console.error('Error fetching tasks:', error);
     res.status(500).json({ error: 'Database  failed' });
